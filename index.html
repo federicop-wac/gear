@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#1a3a2a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="WAC Gear">
+<meta name="mobile-web-app-capable" content="yes">
+<title>WAC BCC Gear Manager</title>
+<link rel="manifest" href="manifest.json">
+<style>
+  :root {
+    --bg: #f5f4f0; --card: #fff; --border: #e0ddd5;
+    --text: #1a1a18; --muted: #6b6b64;
+    --wac-dark: #1a3a2a; --wac-mid: #2d5c3f; --wac-light: #4a8c5c;
+    --wac-red: #8b1a1a; --wac-gold: #c8a020;
+    --green: #3a7d44; --amber: #c47a1a; --red: #b83232; --purple: #5a4a8c;
+    --radius: 10px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #111612; --card: #1c2420; --border: #2e3a30; --text: #e8e6de; --muted: #9a9890; }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); font-size: 15px; min-height: 100vh; }
+
+  /* Header */
+  header {
+    background: linear-gradient(135deg, var(--wac-dark) 0%, var(--wac-mid) 100%);
+    color: #fff; padding: 0 16px; position: sticky; top: 0; z-index: 100;
+    box-shadow: 0 2px 10px rgba(0,0,0,.25);
+  }
+  .header-top { display: flex; align-items: center; gap: 10px; padding: 10px 0 6px; }
+  .wac-logo { width: 40px; height: 40px; object-fit: contain; flex-shrink: 0; }
+  .header-titles { flex: 1; }
+  .header-titles h1 { font-size: 16px; font-weight: 700; letter-spacing: .4px; line-height: 1.1; }
+  .header-titles p { font-size: 11px; opacity: .7; letter-spacing: .6px; text-transform: uppercase; }
+  nav { display: flex; gap: 0; border-top: 1px solid rgba(255,255,255,.1); }
+  nav button {
+    flex: 1; background: none; border: none; color: rgba(255,255,255,.65);
+    padding: 8px 0 9px; cursor: pointer; font-size: 13px; font-weight: 500;
+    border-bottom: 2px solid transparent; transition: all .15s;
+  }
+  nav button.active { color: #fff; border-bottom-color: var(--wac-gold); }
+  nav button:hover { color: #fff; }
+
+  main { max-width: 900px; margin: 0 auto; padding: 16px 14px 80px; }
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* Cards */
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; margin-bottom: 12px; }
+
+  /* Category labels */
+  .category-label {
+    font-size: 12px; font-weight: 700; letter-spacing: .8px; text-transform: uppercase;
+    color: var(--wac-mid); padding: 8px 0 4px; margin-top: 4px;
+    border-bottom: 1.5px solid var(--border); margin-bottom: 2px;
+  }
+  @media (prefers-color-scheme: dark) {
+    .category-label { color: var(--wac-light); }
+  }
+
+  /* Inventory rows */
+  .gear-row { display: flex; align-items: center; gap: 8px; padding: 8px 2px; border-bottom: 1px solid var(--border); }
+  .gear-row:last-child { border-bottom: none; }
+  .gear-name { flex: 1; font-size: 14px; }
+  .gear-name a { color: #4a8fa8; font-size: 12px; margin-left: 5px; }
+  .qty-badge { font-size: 11px; color: var(--muted); background: var(--border); padding: 1px 6px; border-radius: 10px; white-space: nowrap; }
+  .status-btn { display: flex; gap: 3px; flex-shrink: 0; }
+  .status-btn button { border: none; cursor: pointer; padding: 5px 8px; border-radius: 6px; font-size: 12px; font-weight: 500; transition: all .12s; white-space: nowrap; }
+  .btn-own    { background: #e8f5e9; color: var(--green); }
+  .btn-buy    { background: #fff3e0; color: var(--amber); }
+  .btn-borrow { background: #ede7f6; color: var(--purple); }
+  .btn-own.sel    { background: var(--green);  color: #fff; }
+  .btn-buy.sel    { background: var(--amber);  color: #fff; }
+  .btn-borrow.sel { background: var(--purple); color: #fff; }
+
+  /* Progress */
+  .progress-bar { background: var(--border); border-radius: 6px; height: 8px; margin: 8px 0 10px; overflow: hidden; }
+  .progress-fill { height: 100%; border-radius: 6px; transition: width .4s; background: linear-gradient(90deg, var(--wac-mid), var(--wac-light)); }
+  .progress-label { font-size: 13px; color: var(--muted); }
+  .legend { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 8px; font-size: 12px; }
+  .legend-item { display: flex; align-items: center; gap: 5px; }
+  .legend-dot { width: 9px; height: 9px; border-radius: 50%; }
+
+  /* Trip section */
+  select {
+    background: var(--card); border: 1.5px solid var(--border); color: var(--text);
+    padding: 9px 12px; border-radius: var(--radius); font-size: 14px; width: 100%;
+    margin-bottom: 14px; outline: none; -webkit-appearance: none;
+  }
+  .trip-stats { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
+  .stat-chip { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 5px 10px; font-size: 13px; }
+  .stat-chip span { font-weight: 700; }
+  .pack-row { display: flex; align-items: center; gap: 10px; padding: 8px 2px; border-bottom: 1px solid var(--border); }
+  .pack-row:last-child { border-bottom: none; }
+  .pack-check input[type=checkbox] { width: 18px; height: 18px; cursor: pointer; accent-color: var(--wac-mid); flex-shrink: 0; }
+  .pack-name { flex: 1; font-size: 14px; }
+  .pack-name.packed { text-decoration: line-through; color: var(--muted); }
+  .req-badge { font-size: 11px; font-weight: 600; padding: 2px 7px; border-radius: 8px; white-space: nowrap; flex-shrink: 0; }
+  .req { background: #fce8e8; color: var(--red); }
+  .opt { background: #e8f4fd; color: #1a6a9a; }
+  .flag-badge { font-size: 11px; padding: 2px 6px; border-radius: 8px; background: #fff3cd; color: #8a5c00; border: 1px solid #f0d080; white-space: nowrap; flex-shrink: 0; }
+
+  /* Section header */
+  .section-head { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+  .section-head h2 { font-size: 16px; font-weight: 700; }
+  .wac-stripe { height: 3px; flex: 1; background: linear-gradient(90deg, var(--wac-mid), transparent); border-radius: 2px; }
+
+  /* Install banner */
+  #install-banner {
+    display: none; position: fixed; bottom: 0; left: 0; right: 0;
+    background: var(--wac-dark); color: #fff; padding: 12px 16px;
+    z-index: 200; align-items: center; gap: 10px;
+    box-shadow: 0 -2px 12px rgba(0,0,0,.3);
+  }
+  #install-banner p { flex: 1; font-size: 13px; }
+  #install-banner button { border: none; padding: 7px 14px; border-radius: 7px; cursor: pointer; font-size: 13px; font-weight: 600; }
+  .btn-install { background: var(--wac-gold); color: #1a1200; }
+  .btn-dismiss { background: rgba(255,255,255,.15); color: #fff; }
+
+  /* Responsive */
+  @media (max-width: 480px) {
+    .status-btn button { padding: 5px 6px; font-size: 11px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <img class="wac-logo" src="https://washingtonalpineclub.org/wp-content/uploads/2020/01/WAC-logo.png" alt="WAC Logo" onerror="this.style.display='none'">
+    <div class="header-titles">
+      <h1>WAC BCC Gear Manager</h1>
+      <p>Basic Climbing Course</p>
+    </div>
+  </div>
+  <nav>
+    <button class="active" onclick="showTab('closet',this)">🎒 My Closet</button>
+    <button onclick="showTab('trips',this)">🗺 Trips</button>
+  </nav>
+</header>
+
+<main>
+
+<!-- CLOSET SECTION -->
+<div id="closet" class="section active">
+  <div class="card">
+    <div class="progress-label" id="inv-label">Loading…</div>
+    <div class="progress-bar"><div class="progress-fill" id="inv-bar" style="width:0%"></div></div>
+    <div class="legend">
+      <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div> Own</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--amber)"></div> Need to buy</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--purple)"></div> Plan to borrow</div>
+    </div>
+  </div>
+  <div id="inv-list"></div>
+</div>
+
+<!-- TRIPS SECTION -->
+<div id="trips" class="section">
+  <select id="trip-select" onchange="renderTrip()">
+    <option value="">— Select a trip —</option>
+  </select>
+  <div class="trip-stats" id="trip-stats" style="display:none"></div>
+  <div id="trip-list"></div>
+</div>
+
+</main>
+
+<!-- Install banner -->
+<div id="install-banner">
+  <p>📲 Add WAC Gear to your home screen for offline access</p>
+  <button class="btn-install" id="btn-install-do">Install</button>
+  <button class="btn-dismiss" onclick="dismissInstall()">✕</button>
+</div>
+
+<script>
+const TRIPS = ["Mt Si","Ground School","Mt Erie","Vantage","Snow 1 (overnight)","Alpine 1 & 2","Snow 2 (overnight - car camping)","Mt Baker (overnight)"];
+const TRIP_KEYS = {"Mt Si":"MtSi","Ground School":"GS","Mt Erie":"MtErie","Vantage":"V","Snow 1 (overnight)":"S1","Alpine 1 & 2":"A12","Snow 2 (overnight - car camping)":"S2","Mt Baker (overnight)":"MB"};
+
+const GEAR = [
+  {cat:"Packs",name:"Medium backpack (35-40L)",qty:1,link:"https://www.rei.com/c/hiking-backpacks",trips:{MtSi:"R",GS:"R",MtErie:"R",V:"R",S1:"R",A12:"R"}},
+  {cat:"Packs",name:"Large backpack (50-60L)",qty:1,link:"https://www.rei.com/c/hiking-backpacks",trips:{S1:"R",MB:"R"}},
+  {cat:"Footwear",name:"Mountaineering boots",qty:1,link:"https://www.rei.com/c/mountaineering-boots",trips:{MtSi:"R",GS:"R",MtErie:"R",V:"R",S1:"R",A12:"R",S2:"R",MB:"R"}},
+  {cat:"Footwear",name:"Climbing shoes",qty:1,link:"",trips:{V:"O"}},
+  {cat:"Footwear",name:"Light hikers / trail shoes",qty:1,link:"",trips:{MtSi:"O",GS:"O"}},
+  {cat:"Clothing",name:"Heavy socks",qty:2,link:"https://www.rei.com/c/hiking-socks",trips:{MtSi:"R",GS:"R",MtErie:"R",V:"R",S1:"R",A12:"R",S2:"R",MB:"R"}},
+  {cat:"Clothing",name:"Liner gloves",qty:2,link:"https://www.rei.com/c/gloves-mittens",trips:{MtSi:"R",GS:"R",MtErie:"R",V:"R",S1:"R",A12:"R",S2:"R",MB:"R"}},
+  {cat:"Clothing",name:"Winter gloves",qty:1,link:"https://www.rei.com/c/gloves-mittens",trips:{MtSi:"R",GS:"R",MtErie:"R",V:"R",S1:"R",A12:"R",S2:"R",MB:"R"}},
+  {cat:"Clothing",name:"Gaiters (full height)",qty:1,link:"https://www.rei.com/c/gaiters",trips:{MtSi:"R",GS:"O",MtErie:"O",V:"O",S1:"R",A12:"R",S2:"R",MB:"R"}},
+  {cat:"Clothing",name:"Cold weather hat",qty:1,link:"https://www.rei.com/c/beanies-ski-hats",trips:{MtSi:"R",GS:"R",MtErie:"R",V:"R",S1:"R",A12:"R",S2:"R",MB:"R"}},
+  {cat:"Clothing",name:"Balaclava or neck gaiter / buff",qty:1,link:"https://www.rei.com/c/balaclavas",trips:{MtSi:"R",GS:"R",MtErie:"R",V:"R",S1:"R",A12:"R",S2:"R",MB:"R"}},
+  {cat:"Clothing",name:"Sun hat",qty:1,link:"https://www.rei.com/c/sun-hats",trips:{MtSi:"R",GS:"R",MtErie:"R",V:"R",S1:"R",A12:"R",S2:"R",MB:"R"}},
+  {cat:"Clothing",name:"Underwear (synthetic)",qty:1,link:"",trips:{MtSi:"R",GS:"R",MtErie:"R",V:"R",S1:"R",A12:"R",S2:"R",MB:"R"}},
+  {cat:"Clothing",name:"Base-layer top",qty:1,link:"https://www.rei.com/c/base-layers",trips:{MtSi:"R",GS:"R",MtErie:"R",V:"R",S1:"R",A12:"R",S2:"R",MB:"R"}},
+  {cat:"Clothing",name:"Base-layer bottom",qty:1,link:"https://www.rei.com/c/base-layers",trips:{MtSi:"R",GS:"R",MtErie:"R",V:"R",S1:"R",A12:"R",S2:"R",MB:"R"}},
+  {cat:"Clothing",name:"Mid-layer top",qty:1,link:"https://www.rei.com/c/fleece-jackets",trips:{MtSi:"R",GS:"R",MtErie:"R",V:"R",S1:"R",A12:"R",S2:"R",MB:"R"}},
+  {cat:"Clothing",name:"Light puffy jacket",qty:1,link:"https://www.rei.com/c/down-jackets",trips:{MtSi:"R",GS:"R",MtErie:"R",V:"R",S1:"R",A12:"R",S2:"R",MB:"R"}},
+  {cat:"Clothing",name:"Big puffy jacket / belay parka",qty:1,link:"https://www.rei.com/c/down-jackets",trips:{MtSi:"O",GS:"O",MtErie:"O",V:"O",S1:"R",A12:"O",S2:"O",MB:"R"}},
+  {cat:"Clothing",name:"Soft shell pants",qty:1,link:"https://www.rei.com/c/softshell-pants",trips:{MtSi:"R",GS:"R",MtErie:"R",V:"R",S1:"R",A12:"R",S2:"R",MB:"R"}},
+  {cat:"Clothing",name:"Hard shell rain jacket",qty:1,link:"https://www.rei.com/c/rain-jackets",trips:{MtSi:"R",GS:"R",MtErie:"R",V:"R",S1:"R",A12:"R",S2:"R",MB:"R"}},
+  {cat:"Clothing",name:"Hard shell rain pants",qty:1,link:"https://www.rei.com/c/rain-pants",trips:{MtSi:"R",GS:"R",MtErie:"R",V:"R",S1:"R",A12:"R",S2:"R",MB:"R"}},
+  {cat:"Clothing",name:"Heavy winter overmitts",qty:1,link:"https://www.rei.com/c/gloves-mittens",trips:{MtSi:"O",GS:"O",MtErie:"O",V:"O",S1:"O",A12:"O",S2:"O",MB:"O"}},
+  {cat:"Clothing",name:"Liner socks",qty:2,link:"",trips:{MtSi:"O",GS:"O",MtErie:"O",V:"O",S1:"O",A12:"O",S2:"O",MB:"O"}},
+  {cat:"Clothing",name:"Bandana",qty:1,link:"",trips:{MtSi:"O",GS:"O",MtErie:"O",V:"O",S1:"O",A12:"O",S2:"O",MB:"O"}},
+  {cat:"Essentials",name:"Personal first aid kit",qty:1,link:"https://www.rei.com/c/first-aid-kits",trips:{MtSi:"R",GS:"R",MtErie:"R",V:"R",S1:"R",A12:"R",S2:"R",MB:"R"}},
+  {cat:"Essentials",name:"LED headlamp + extra batteries",qty:1,link:"https://www.rei.com/c/headlamps",trips:{MtSi:"R",GS:"R",MtErie:"R",V:"R",S1:"R",A12:"R"}},
+  {cat:"Essentials",name:"Compass (adjustable declination)",qty:1,link:"https://www.rei.com/c/compasses",trips:{MtSi:"R",GS:"R",MtErie:"R",V:"R",S1:"R",A12:"R",S2:"R"}},
+  {cat:"Essentials",name:"Map (paper / topo)",qty:1,link:"",trips:{MtSi:"R",GS:"R",MtErie:"R",V:"R",S1:"R"}},
+  {cat:"Essentials",name:"Lip balm (SPF 15+)",qty:1,link:"",trips:{MtSi:"R",GS:"R",MtErie:"R",V:"R",S1:"R",A12:"R",S2:"R",MB:"R"}},
+  {cat:"Essentials",name:"Sunscreen (SPF 30+)",qty:1,link:"",trips:{MtSi:"R",GS:"R",MtErie:"R",V:"R",S1:"R",A12:"R",S2:"R",MB:"R"}},
+  {cat:"Essentials",name:"Sunglasses / glacier glasses",qty:1,link:"https://www.rei.com/c/sunglasses",trips:{MtSi:"R",GS:"R",MtErie:"R",V:"R",S1:"R",A12:"R",S2:"R",MB:"R"}},
+  {cat:"Essentials",name:"Water bottles / hydration (3L)",qty:1,link:"https://www.rei.com/c/water-bottles",trips:{MtSi:"R",GS:"R",MtErie:"R",V:"R",S1:"R",A12:"R",S2:"R",MB:"R"}},
+  {cat:"Essentials",name:"Duct tape (~10 ft)",qty:1,link:"",trips:{MtSi:"R",GS:"R",MtErie:"R",V:"R",S1:"R",A12:"R",S2:"R",MB:"R"}},
+  {cat:"Essentials",name:"Pocket knife",qty:1,link:"https://www.rei.com/c/multi-tools-knives",trips:{MtSi:"R",GS:"R",MtErie:"R",V:"R",S1:"R",A12:"R",S2:"R",MB:"R"}},
+  {cat:"Essentials",name:"Blue bags",qty:1,link:"",trips:{MtSi:"R",V:"O",S1:"O",MB:"R"}},
+  {cat:"Essentials",name:"Waterproof matches",qty:1,link:"https://www.rei.com/c/fire-starters",trips:{MtSi:"R",GS:"R",MtErie:"R",S1:"R",A12:"R"}},
+  {cat:"Essentials",name:"Emergency bivy bag",qty:1,link:"https://www.rei.com/c/bivy-sacks",trips:{MtSi:"R",GS:"R",MtErie:"R",S1:"R",A12:"R"}},
+  {cat:"Essentials",name:"Trekking poles",qty:1,link:"https://www.rei.com/c/trekking-poles",trips:{MtSi:"R",GS:"R",MtErie:"R",S1:"R",A12:"R"}},
+  {cat:"Essentials",name:"Food and water (min 3L)",qty:1,link:"",trips:{MtSi:"R",GS:"R",MtErie:"R",V:"R",S1:"R",A12:"R",S2:"R",MB:"R"}},
+  {cat:"Essentials",name:"Hand sanitizer",qty:1,link:"",trips:{MtSi:"O",GS:"O",MtErie:"O",V:"O",S1:"O",A12:"O",S2:"O",MB:"O"}},
+  {cat:"Essentials",name:"Hand warmers",qty:1,link:"https://www.rei.com/c/hand-warmers",trips:{MtSi:"O",GS:"O",MtErie:"O",V:"O",S1:"O",A12:"O",S2:"O",MB:"O"}},
+  {cat:"Essentials",name:"Toe warmers",qty:1,link:"",trips:{MtSi:"O",GS:"O",MtErie:"O",V:"O",S1:"O",A12:"O",S2:"O",MB:"O"}},
+  {cat:"Essentials",name:"Ground cloth / small tarp",qty:1,link:"",trips:{GS:"O",MtErie:"O",V:"O",A12:"O",S2:"O"}},
+  {cat:"Snow Camping",name:"Sleeping pad (full length)",qty:1,link:"https://www.rei.com/c/sleeping-pads",trips:{S1:"R",A12:"R",MB:"R"}},
+  {cat:"Snow Camping",name:"Sleeping bag (~15°F)",qty:1,link:"https://www.rei.com/c/sleeping-bags",trips:{S1:"R",A12:"R",MB:"R"}},
+  {cat:"Snow Camping",name:"Tent",qty:1,link:"https://www.rei.com/c/tents",trips:{S1:"R",A12:"R",MB:"R"}},
+  {cat:"Snow Camping",name:"Snow stakes for tent (4+)",qty:4,link:"",trips:{S1:"R",A12:"R"}},
+  {cat:"Snow Camping",name:"Stove",qty:1,link:"https://www.rei.com/c/camp-stoves",trips:{S1:"R",A12:"R",MB:"R"}},
+  {cat:"Snow Camping",name:"Cook set (min 0.75L pot)",qty:1,link:"https://www.rei.com/c/camp-cookware",trips:{S1:"R",A12:"R",MB:"R"}},
+  {cat:"Snow Camping",name:"Cup",qty:1,link:"",trips:{S1:"O",A12:"O",MB:"O"}},
+  {cat:"Snow Camping",name:"Spoon / bowl",qty:1,link:"",trips:{S1:"R",A12:"R",MB:"R"}},
+  {cat:"Snow Camping",name:"Snow shovel",qty:1,link:"https://www.rei.com/c/snow-shovels",trips:{S1:"R",A12:"R"}},
+  {cat:"Snow Camping",name:"Toiletries",qty:1,link:"",trips:{S1:"O",A12:"O",MB:"O"}},
+  {cat:"Snow Camping",name:"Pack towel",qty:1,link:"",trips:{S1:"O",A12:"O",MB:"O"}},
+  {cat:"Snow Camping",name:"Down booties",qty:1,link:"https://www.rei.com/c/camp-booties",trips:{S1:"O",A12:"O",MB:"O"}},
+  {cat:"Snow Camping",name:"Sit pad",qty:1,link:"",trips:{S1:"O",A12:"O",MB:"O"}},
+  {cat:"Technical Gear",name:"Practice rope",qty:1,link:"",trips:{MtSi:"R",S1:"R",A12:"R"}},
+  {cat:"Technical Gear",name:"Climbing harness",qty:1,link:"https://www.rei.com/c/climbing-harnesses",trips:{MtSi:"R",GS:"R",MtErie:"R",V:"R",S1:"R",A12:"R",S2:"R",MB:"R"}},
+  {cat:"Technical Gear",name:"Climbing helmet",qty:1,link:"https://www.rei.com/c/climbing-helmets",trips:{MtSi:"R",GS:"R",MtErie:"R",V:"R",S1:"R",A12:"R",S2:"R",MB:"R"}},
+  {cat:"Technical Gear",name:"Belay/rappel device (ATC Guide)",qty:1,link:"https://www.rei.com/c/belay-rappel-devices",trips:{MtSi:"R",GS:"R",MtErie:"R",V:"R",S1:"R",A12:"R",S2:"R",MB:"R"}},
+  {cat:"Technical Gear",name:"Rescue pulley (prusik-minding)",qty:1,link:"https://www.rei.com/c/pulleys",trips:{MtSi:"R",S1:"R",A12:"R"}},
+  {cat:"Technical Gear",name:"Locking carabiners (5, 2+ HMS)",qty:5,link:"https://www.rei.com/c/carabiners",trips:{MtSi:"R",GS:"R",MtErie:"R",V:"R",S1:"R",A12:"R",S2:"R",MB:"R"}},
+  {cat:"Technical Gear",name:"Non-locking carabiners (4)",qty:4,link:"https://www.rei.com/c/carabiners",trips:{MtSi:"R",GS:"R",MtErie:"R",V:"R",S1:"R",A12:"R",S2:"R",MB:"R"}},
+  {cat:"Technical Gear",name:"Sterling HollowBlock Loop 13.5\" (6.8mm)",qty:1,link:"https://www.sterlingrope.com/",trips:{MtSi:"R",GS:"R",MtErie:"R",V:"R",S1:"R",A12:"R",S2:"R",MB:"R"}},
+  {cat:"Technical Gear",name:"6' perlon cord 5mm (×2)",qty:2,link:"",trips:{MtSi:"R",GS:"R",MtErie:"R",V:"R",S1:"R",A12:"R",S2:"R",MB:"R"}},
+  {cat:"Technical Gear",name:"11' tubular webbing 1\" (×1)",qty:1,link:"",trips:{MtSi:"R",S1:"R"}},
+  {cat:"Technical Gear",name:"Single-length sewn runners 24\" (×2)",qty:2,link:"https://www.rei.com/c/slings-runners",trips:{MtSi:"R",GS:"R",MtErie:"R",V:"R",S1:"R",A12:"R",S2:"R",MB:"R"}},
+  {cat:"Technical Gear",name:"Double-length sewn runner 48\" (×1)",qty:1,link:"https://www.rei.com/c/slings-runners",trips:{MtSi:"R",GS:"R",MtErie:"R",V:"R",S1:"R",A12:"R",S2:"R",MB:"R"}},
+  {cat:"Technical Gear",name:"Personal anchor system (Metolius PAS)",qty:1,link:"https://www.rei.com/c/personal-anchors",trips:{MtSi:"R",GS:"R",MtErie:"R",V:"R",S1:"R",A12:"R"}},
+  {cat:"Technical Gear",name:"Ice axe leash",qty:1,link:"",trips:{S1:"R",A12:"R",S2:"R",MB:"R"}},
+  {cat:"Technical Gear",name:"Ice axe",qty:1,link:"https://www.rei.com/c/ice-axes",trips:{S1:"R",A12:"R",S2:"R",MB:"R"}},
+  {cat:"Technical Gear",name:"Crampons (STEEL)",qty:1,link:"https://www.rei.com/c/crampons",trips:{S1:"R",A12:"R",MB:"R"}},
+  {cat:"Technical Gear",name:"Snow picket 24\"",qty:1,link:"",trips:{S1:"R",A12:"R",MB:"R"}},
+  {cat:"Technical Gear",name:"Wands (×8)",qty:8,link:"",trips:{S1:"R",A12:"R"}},
+  {cat:"Other Gear",name:"Micro spikes",qty:1,link:"https://www.rei.com/c/microspikes",trips:{MtSi:"O"}},
+  {cat:"Other Gear",name:"Snow goggles",qty:1,link:"https://www.rei.com/c/ski-goggles",trips:{S1:"O",A12:"O",MB:"O"}},
+  {cat:"Other Gear",name:"Clear goggles",qty:1,link:"",trips:{S1:"O",A12:"O"}},
+];
+
+let state = {}, packState = {};
+
+function load() {
+  try { state = JSON.parse(localStorage.getItem('wac-closet') || '{}'); } catch(e){}
+  try { packState = JSON.parse(localStorage.getItem('wac-pack') || '{}'); } catch(e){}
+}
+function save() {
+  localStorage.setItem('wac-closet', JSON.stringify(state));
+  localStorage.setItem('wac-pack', JSON.stringify(packState));
+}
+
+function showTab(t, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById(t).classList.add('active');
+  btn.classList.add('active');
+}
+
+function setStatus(idx, val) {
+  state[idx] = (state[idx] === val) ? '' : val;
+  save(); renderInventory();
+}
+
+function renderInventory() {
+  const cats = [...new Set(GEAR.map(g => g.cat))];
+  const total = GEAR.length;
+  const owned = GEAR.filter((_,i) => state[i] === 'own').length;
+  const pct = Math.round(owned/total*100);
+  document.getElementById('inv-label').textContent =
+    `${owned} of ${total} items owned (${pct}%)  ·  ` +
+    `${GEAR.filter((_,i)=>state[i]==='buy').length} to buy  ·  ` +
+    `${GEAR.filter((_,i)=>state[i]==='borrow').length} to borrow`;
+  document.getElementById('inv-bar').style.width = pct+'%';
+  let html = '';
+  cats.forEach(cat => {
+    const items = GEAR.map((g,i) => ({...g,i})).filter(g => g.cat === cat);
+    html += `<div class="category-label">${cat}</div>`;
+    items.forEach(({i, name, qty, link}) => {
+      const s = state[i] || '';
+      html += `<div class="gear-row">
+        <div class="gear-name">${name}
+          ${qty > 1 ? `<span class="qty-badge">×${qty}</span>` : ''}
+          ${link ? `<a href="${link}" target="_blank">↗</a>` : ''}
+        </div>
+        <div class="status-btn">
+          <button class="btn-own ${s==='own'?'sel':''}" onclick="setStatus(${i},'own')">Own</button>
+          <button class="btn-buy ${s==='buy'?'sel':''}" onclick="setStatus(${i},'buy')">Buy</button>
+          <button class="btn-borrow ${s==='borrow'?'sel':''}" onclick="setStatus(${i},'borrow')">Borrow</button>
+        </div>
+      </div>`;
+    });
+  });
+  document.getElementById('inv-list').innerHTML = html;
+}
+
+function populateTripSelect() {
+  const sel = document.getElementById('trip-select');
+  TRIPS.forEach(t => { const o = document.createElement('option'); o.value=o.textContent=t; sel.appendChild(o); });
+}
+
+function togglePack(tripKey, gearIdx) {
+  const k = `${tripKey}:${gearIdx}`;
+  packState[k] = !packState[k];
+  save(); renderTrip();
+}
+
+function resetPacking() {
+  const trip = document.getElementById('trip-select').value;
+  if (!trip) return;
+  const key = TRIP_KEYS[trip];
+  Object.keys(packState).forEach(k => { if(k.startsWith(key+':')) delete packState[k]; });
+  save(); renderTrip();
+}
+
+function renderTrip() {
+  const trip = document.getElementById('trip-select').value;
+  const statsDiv = document.getElementById('trip-stats');
+  const listDiv = document.getElementById('trip-list');
+  if (!trip) { statsDiv.style.display='none'; listDiv.innerHTML=''; return; }
+  const key = TRIP_KEYS[trip];
+  const items = GEAR.map((g,i) => ({...g,i})).filter(g => g.trips[key]);
+  const required = items.filter(g => g.trips[key]==='R');
+  const packed = items.filter(g => packState[`${key}:${g.i}`]);
+  const flagged = required.filter(g => !state[g.i]);
+  statsDiv.style.display = 'flex';
+  statsDiv.innerHTML =
+    `<div class="stat-chip">Packed <span>${packed.length}/${items.length}</span></div>` +
+    `<div class="stat-chip">Required <span style="color:var(--red)">${required.length}</span></div>` +
+    `<div class="stat-chip">Optional <span style="color:#1a6a9a">${items.length-required.length}</span></div>` +
+    (flagged.length ? `<div class="stat-chip">⚠️ Missing <span style="color:var(--amber)">${flagged.length}</span></div>` : '') +
+    `<button onclick="resetPacking()" style="margin-left:auto;background:var(--border);border:none;padding:5px 10px;border-radius:8px;cursor:pointer;font-size:12px;color:var(--muted)">Reset</button>`;
+  const cats = [...new Set(items.map(g => g.cat))];
+  let html = '';
+  ['R','O'].forEach(reqType => {
+    const grouped = cats.map(c => ({cat:c, items:items.filter(g=>g.cat===c&&g.trips[key]===reqType)})).filter(g=>g.items.length);
+    if (!grouped.length) return;
+    html += `<div class="card"><div class="section-head"><h2>${reqType==='R'?'Required gear':'Optional gear'}</h2><div class="wac-stripe"></div></div>`;
+    grouped.forEach(({cat,items:its}) => {
+      html += `<div class="category-label">${cat}</div>`;
+      its.forEach(g => {
+        const pk = `${key}:${g.i}`;
+        const isPacked = !!packState[pk];
+        const notAcquired = reqType==='R' && !state[g.i];
+        html += `<div class="pack-row">
+          <div class="pack-check"><input type="checkbox" ${isPacked?'checked':''} onchange="togglePack('${key}',${g.i})"></div>
+          <div class="pack-name ${isPacked?'packed':''}">${g.name}${g.qty>1?` <span class="qty-badge">×${g.qty}</span>`:''}${g.link?` <a href="${g.link}" target="_blank" style="color:#4a8fa8;font-size:12px">↗</a>`:''}</div>
+          <span class="req-badge ${reqType==='R'?'req':'opt'}">${reqType==='R'?'Required':'Optional'}</span>
+          ${notAcquired?`<span class="flag-badge">⚠ Not acquired</span>`:''}
+        </div>`;
+      });
+    });
+    html += '</div>';
+  });
+  listDiv.innerHTML = html;
+}
+
+// PWA Install prompt
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  if (!localStorage.getItem('wac-install-dismissed')) {
+    document.getElementById('install-banner').style.display = 'flex';
+  }
+});
+document.getElementById('btn-install-do').addEventListener('click', async () => {
+  if (!deferredPrompt) return;
+  deferredPrompt.prompt();
+  const {outcome} = await deferredPrompt.userChoice;
+  deferredPrompt = null;
+  document.getElementById('install-banner').style.display = 'none';
+});
+function dismissInstall() {
+  document.getElementById('install-banner').style.display = 'none';
+  localStorage.setItem('wac-install-dismissed','1');
+}
+
+// Service Worker for offline
+if ('serviceWorker' in navigator) {
+  const swCode = `
+const CACHE = 'wac-gear-v1';
+self.addEventListener('install', e => {
+  e.waitUntil(caches.open(CACHE).then(c => c.addAll(['/'])));
+  self.skipWaiting();
+});
+self.addEventListener('activate', e => {
+  e.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))));
+  self.clients.claim();
+});
+self.addEventListener('fetch', e => {
+  e.respondWith(caches.match(e.request).then(r => r || fetch(e.request).then(res => {
+    const clone = res.clone();
+    caches.open(CACHE).then(c => c.put(e.request, clone));
+    return res;
+  }).catch(() => caches.match('/'))));
+});`;
+  const blob = new Blob([swCode], {type:'application/javascript'});
+  const swUrl = URL.createObjectURL(blob);
+  navigator.serviceWorker.register(swUrl).catch(()=>{});
+}
+
+load();
+renderInventory();
+populateTripSelect();
+</script>
+</body>
+</html>

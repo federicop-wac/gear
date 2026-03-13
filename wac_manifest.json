@@ -1,0 +1,20 @@
+{
+  "name": "WAC BCC Gear Manager",
+  "short_name": "WAC Gear",
+  "start_url": "/wac-gear-manager/",
+  "display": "standalone",
+  "background_color": "#1a3a2a",
+  "theme_color": "#1a3a2a",
+  "icons": [
+    {
+      "src": "wac-logo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "wac-logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
