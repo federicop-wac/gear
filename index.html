@@ -44,10 +44,10 @@ main{max-width:900px;margin:0 auto;padding:16px 14px 80px;}
 .gear-name{flex:1;font-size:14px;line-height:1.3;}
 .gear-name a{color:var(--blue);font-size:12px;margin-left:4px;}
 .qty-badge{font-size:11px;color:var(--muted);background:var(--border);padding:1px 6px;border-radius:10px;white-space:nowrap;}
-.req-type-badge{font-size:10px;font-weight:600;padding:2px 6px;border-radius:8px;white-space:nowrap;flex-shrink:0;}
-.rt-r{background:#fce8e8;color:var(--red);}
-.rt-o{background:#e8f4fd;color:var(--blue);}
-.rt-s{background:#e8f5e9;color:var(--green);}
+.req-type-badge{font-size:10px;font-weight:600;padding:1px 5px;border-radius:4px;white-space:nowrap;border:1px solid;letter-spacing:.3px;}
+.rt-r{background:transparent;color:var(--red);border-color:var(--red);}
+.rt-o{background:transparent;color:var(--blue);border-color:var(--blue);}
+.rt-s{background:transparent;color:var(--green);border-color:var(--green);}
 
 /* Status buttons */
 .status-btn{display:flex;gap:3px;flex-shrink:0;}
@@ -317,11 +317,10 @@ function renderInventory() {
       const s=state[i]||'';
       const [,name,qty,req,link]=g;
       html+=`<div class="gear-row">
-        <div class="gear-name">${name}
+        <div class="gear-name">${name} ${reqTypeBadge(req)}
           ${qty&&qty!=='1'?`<span class="qty-badge">×${qty}</span>`:''}
           ${link?`<a href="${link}" target="_blank">↗</a>`:''}
         </div>
-        ${reqTypeBadge(req)}
         <div class="status-btn">
           <button class="btn-own ${s==='own'?'sel':''}" onclick="setStatus(${i},'own')">Own</button>
           <button class="btn-buy ${s==='buy'?'sel':''}" onclick="setStatus(${i},'buy')">Buy</button>
@@ -380,16 +379,23 @@ function renderTrip() {
     html+=`<div class="card"><div class="section-head"><h2>${rt==='R'?'Required gear':'Optional gear'}</h2><div class="wac-stripe"></div></div>`;
     grouped.forEach(({cat,items:its})=>{
       html+=`<div class="category-label">${cat}</div>`;
-      its.forEach(({g,i})=>{
+              its.forEach(({g,i})=>{
         const pk=`${ti}:${i}`;
         const isPacked=!!packState[pk];
         const notAcq=rt==='R'&&!state[i];
         const [,name,qty,,link]=g;
+        const statusBadge = state[i]==='own'
+          ? `<span class="req-type-badge" style="background:#e8f5e9;color:var(--green)">✓ Own</span>`
+          : state[i]==='buy'
+          ? `<span class="req-type-badge" style="background:#fff3e0;color:var(--amber)">$ Buy</span>`
+          : state[i]==='borrow'
+          ? `<span class="req-type-badge" style="background:#ede7f6;color:var(--purple)">↗ Borrow</span>`
+          : `<span class="req-type-badge" style="background:var(--border);color:var(--muted)">? Not set</span>`;
         html+=`<div class="pack-row">
           <div class="pack-check"><input type="checkbox" ${isPacked?'checked':''} onchange="togglePack(${ti},${i})"></div>
           <div class="pack-name ${isPacked?'packed':''}">${name}${qty&&qty!=='1'?` <span class="qty-badge">×${qty}</span>`:''}${link?` <a href="${link}" target="_blank" style="color:var(--blue);font-size:12px">↗</a>`:''}</div>
           ${reqTypeBadge(g[3])}
-          <span class="trip-req-badge ${rt==='R'?'treq':'topt'}">${rt==='R'?'Required':'Optional'}</span>
+          ${statusBadge}
           ${notAcq?`<span class="flag-badge">⚠ Not acquired</span>`:''}
         </div>`;
       });
