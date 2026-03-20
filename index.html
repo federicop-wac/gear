@@ -182,7 +182,7 @@ const GEAR = [
   ["Clothing","Base-layer bottom","1","R","https://www.rei.com/c/base-layers","R","R","R","R","R","R","R","R"],
   ["Clothing","Mid-layer top","1","R","https://www.rei.com/c/fleece-jackets","R","R","R","R","R","R","R","R"],
   ["Clothing","Light puffy jacket","1","R","https://www.rei.com/c/down-jackets","R","R","R","R","R","R","R","R"],
-  ["Clothing","Big puffy jacket / belay parka","1","O","https://www.rei.com/c/down-jackets","O","O","O","O","R","O","O","R"],
+  ["Clothing","Big puffy jacket / belay parka","1","R","https://www.rei.com/c/down-jackets","O","O","O","O","R","O","O","R"],
   ["Clothing","Soft shell pants","1","R","https://www.rei.com/c/softshell-pants","R","R","R","R","R","R","R","R"],
   ["Clothing","Hard shell rain jacket","1","R","https://www.rei.com/c/rain-jackets","R","R","R","R","R","R","R","R"],
   ["Clothing","Hard shell rain pants","1","R","https://www.rei.com/c/rain-pants","R","R","R","R","R","R","R","R"],
@@ -200,7 +200,7 @@ const GEAR = [
   ["Essentials","Water bottles / hydration (3L)","3L","R","https://www.rei.com/c/water-bottles","R","R","R","R","R","R","R","R"],
   ["Essentials","Duct tape (~10 ft)","1","R","","R","R","R","R","R","R","R","R"],
   ["Essentials","Pocket knife","1","R","https://www.rei.com/c/multi-tools-knives","R","R","R","R","R","R","R","R"],
-  ["Essentials","Blue bags","1+","R","","R","","","O","O","","","R"],
+  ["Essentials","Blue bags","1+","R","","","","","O","O","","","R"],
   ["Essentials","Waterproof matches","1","R","https://www.rei.com/c/fire-starters","R","R","R","","R","R","",""],
   ["Essentials","Emergency bivy bag","1","R","https://www.rei.com/c/bivy-sacks","R","R","R","","R","R","",""],
   ["Essentials","Trekking poles","1","R","https://www.rei.com/c/trekking-poles","R","R","R","","R","R","",""],
@@ -226,7 +226,7 @@ const GEAR = [
   // TECHNICAL GEAR
   ["Technical Gear","Practice rope","1","R","","R","","","","R","R","",""],
   ["Technical Gear","Climbing harness","1","R","https://www.rei.com/c/climbing-harnesses","R","R","R","R","R","R","R","R"],
-  ["Technical Gear","Climbing helmet","1","R","https://www.rei.com/c/climbing-helmets","R","R","R","R","R","R","R","R"],
+  ["Technical Gear","Climbing helmet","1","R","https://www.rei.com/c/climbing-helmets","","R","R","R","R","R","R","R"],
   ["Technical Gear","Belay/rappel device (ATC Guide)","1","R","https://www.rei.com/c/belay-rappel-devices","R","R","R","R","R","R","R","R"],
   ["Technical Gear","Rescue pulley (prusik-minding)","1","R","https://www.rei.com/c/pulleys","R","","","","R","R","",""],
   ["Technical Gear","Locking carabiners (5, 2+ HMS)","5","R","https://www.rei.com/c/carabiners","R","R","R","R","R","R","R","R"],
@@ -394,7 +394,6 @@ function renderTrip() {
         html+=`<div class="pack-row">
           <div class="pack-check"><input type="checkbox" ${isPacked?'checked':''} onchange="togglePack(${ti},${i})"></div>
           <div class="pack-name ${isPacked?'packed':''}">${name}${qty&&qty!=='1'?` <span class="qty-badge">×${qty}</span>`:''}${link?` <a href="${link}" target="_blank" style="color:var(--blue);font-size:12px">↗</a>`:''}</div>
-          ${reqTypeBadge(g[3])}
           ${statusBadge}
           ${notAcq?`<span class="flag-badge">⚠ Not acquired</span>`:''}
         </div>`;
