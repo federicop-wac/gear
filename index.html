@@ -22,6 +22,8 @@
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 body{font-family:system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);font-size:15px;min-height:100vh;}
+
+/* Header */
 header{background:linear-gradient(135deg,var(--wac-dark) 0%,var(--wac-mid) 100%);color:#fff;padding:0 16px;position:sticky;top:0;z-index:100;box-shadow:0 2px 10px rgba(0,0,0,.25);}
 .header-top{display:flex;align-items:center;gap:10px;padding:10px 0 6px;}
 .wac-logo{width:40px;height:40px;object-fit:contain;flex-shrink:0;}
@@ -30,6 +32,7 @@ header{background:linear-gradient(135deg,var(--wac-dark) 0%,var(--wac-mid) 100%)
 nav{display:flex;border-top:1px solid rgba(255,255,255,.1);}
 nav button{flex:1;background:none;border:none;color:rgba(255,255,255,.65);padding:8px 0 9px;cursor:pointer;font-size:13px;font-weight:500;border-bottom:2px solid transparent;transition:all .15s;}
 nav button.active{color:#fff;border-bottom-color:var(--wac-gold);}
+
 main{max-width:900px;margin:0 auto;padding:16px 14px 80px;}
 .section{display:none;}.section.active{display:block;}
 .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px;margin-bottom:12px;}
@@ -44,7 +47,9 @@ main{max-width:900px;margin:0 auto;padding:16px 14px 80px;}
 .gear-name{flex:1;font-size:14px;line-height:1.3;}
 .gear-name a{color:var(--blue);font-size:12px;margin-left:4px;}
 .qty-badge{font-size:11px;color:var(--muted);background:var(--border);padding:1px 6px;border-radius:10px;white-space:nowrap;}
-.req-type-badge{font-size:10px;font-weight:600;padding:1px 5px;border-radius:4px;white-space:nowrap;border:1px solid;letter-spacing:.3px;}
+
+/* Type badge — inline, outlined, reads as a label not a button */
+.req-type-badge{font-size:10px;font-weight:600;padding:1px 5px;border-radius:4px;white-space:nowrap;border:1px solid;letter-spacing:.3px;vertical-align:middle;margin-left:4px;}
 .rt-r{background:transparent;color:var(--red);border-color:var(--red);}
 .rt-o{background:transparent;color:var(--blue);border-color:var(--blue);}
 .rt-s{background:transparent;color:var(--green);border-color:var(--green);}
@@ -70,14 +75,10 @@ main{max-width:900px;margin:0 auto;padding:16px 14px 80px;}
 /* Filters */
 .filter-bar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;}
 .filter-btn{border:1.5px solid var(--border);background:var(--card);color:var(--muted);padding:5px 11px;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;transition:all .15s;}
-.filter-btn.fa{background:var(--wac-mid);border-color:var(--wac-mid);color:#fff;}
-.filter-btn.fo{background:var(--green);border-color:var(--green);color:#fff;}
-.filter-btn.fb{background:var(--amber);border-color:var(--amber);color:#fff;}
-.filter-btn.fc{background:var(--purple);border-color:var(--purple);color:#fff;}
-.filter-btn.fn{background:var(--muted);border-color:var(--muted);color:#fff;}
+.filter-btn.active{background:var(--wac-mid);border-color:var(--wac-mid);color:#fff;}
 .empty-msg{text-align:center;color:var(--muted);font-size:14px;padding:32px 0;}
 
-/* Trips */
+/* Trip section */
 select{background:var(--card);border:1.5px solid var(--border);color:var(--text);padding:9px 12px;border-radius:var(--radius);font-size:14px;width:100%;margin-bottom:14px;outline:none;-webkit-appearance:none;}
 .trip-stats{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;}
 .stat-chip{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:5px 10px;font-size:13px;}
@@ -87,13 +88,29 @@ select{background:var(--card);border:1.5px solid var(--border);color:var(--text)
 .pack-check input{width:18px;height:18px;cursor:pointer;accent-color:var(--wac-mid);flex-shrink:0;}
 .pack-name{flex:1;font-size:14px;line-height:1.3;}
 .pack-name.packed{text-decoration:line-through;color:var(--muted);}
-.trip-req-badge{font-size:11px;font-weight:600;padding:2px 7px;border-radius:8px;white-space:nowrap;flex-shrink:0;}
-.treq{background:#fce8e8;color:var(--red);}
-.topt{background:#e8f4fd;color:var(--blue);}
 .flag-badge{font-size:11px;padding:2px 6px;border-radius:8px;background:#fff3cd;color:#8a5c00;border:1px solid #f0d080;white-space:nowrap;flex-shrink:0;}
+.status-badge{font-size:11px;font-weight:600;padding:2px 7px;border-radius:8px;white-space:nowrap;flex-shrink:0;}
 .section-head{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
 .section-head h2{font-size:15px;font-weight:700;}
 .wac-stripe{height:3px;flex:1;background:linear-gradient(90deg,var(--wac-mid),transparent);border-radius:2px;}
+
+/* Knots */
+.knot-row{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:8px;overflow:hidden;}
+.knot-main{display:flex;align-items:center;gap:10px;padding:12px 14px;cursor:pointer;user-select:none;}
+.knot-main input[type=checkbox]{width:18px;height:18px;accent-color:var(--wac-mid);flex-shrink:0;cursor:pointer;}
+.knot-name{flex:1;font-size:15px;font-weight:500;}
+.knot-name.learned{text-decoration:line-through;color:var(--muted);}
+.knot-link{color:var(--blue);font-size:18px;text-decoration:none;flex-shrink:0;padding:0 4px;}
+.knot-caret{background:none;border:none;cursor:pointer;color:var(--muted);font-size:16px;padding:0 4px;flex-shrink:0;transition:transform .2s;line-height:1;}
+.knot-caret.open{transform:rotate(180deg);}
+.knot-notes{display:none;padding:0 14px 12px 50px;font-size:13px;color:var(--muted);line-height:1.6;border-top:1px solid var(--border);}
+.knot-notes.open{display:block;}
+.knot-notes ul{padding-left:16px;margin-top:6px;}
+.knot-notes li{margin-bottom:3px;}
+.knot-notes .warn{color:var(--red);font-weight:600;}
+.knot-header-card{margin-bottom:12px;}
+.knot-progress-row{display:flex;align-items:center;gap:10px;}
+.knot-count{font-size:13px;color:var(--muted);white-space:nowrap;}
 
 /* Install banner */
 #install-banner{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--wac-dark);color:#fff;padding:12px 16px;z-index:200;align-items:center;gap:10px;box-shadow:0 -2px 12px rgba(0,0,0,.3);}
@@ -116,40 +133,54 @@ select{background:var(--card);border:1.5px solid var(--border);color:var(--text)
   <nav>
     <button class="active" onclick="showTab('closet',this)">🎒 My Closet</button>
     <button onclick="showTab('trips',this)">🗺 Trips</button>
+    <button onclick="showTab('knots',this)">🪢 Knots</button>
   </nav>
 </header>
 
 <main>
-<div id="closet" class="section active">
-  <div class="card">
-    <div class="progress-label" id="inv-label">Loading…</div>
-    <div class="progress-bar"><div class="progress-fill" id="inv-bar" style="width:0%"></div></div>
-    <div class="legend">
-      <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div>Own</div>
-      <div class="legend-item"><div class="legend-dot" style="background:var(--amber)"></div>Need to buy</div>
-      <div class="legend-item"><div class="legend-dot" style="background:var(--purple)"></div>Plan to borrow</div>
+  <!-- CLOSET -->
+  <div id="closet" class="section active">
+    <div class="card">
+      <div class="progress-label" id="inv-label">Loading…</div>
+      <div class="progress-bar"><div class="progress-fill" id="inv-bar" style="width:0%"></div></div>
+      <div class="legend">
+        <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div>Own</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--amber)"></div>Need to buy</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--purple)"></div>Plan to borrow</div>
+      </div>
     </div>
+    <div class="filter-bar" id="filter-bar">
+      <button class="filter-btn active" onclick="setFilter('all',this)">All</button>
+      <button class="filter-btn" onclick="setFilter('own',this)">✓ Own</button>
+      <button class="filter-btn" onclick="setFilter('buy',this)">$ Buy</button>
+      <button class="filter-btn" onclick="setFilter('borrow',this)">↗ Borrow</button>
+      <button class="filter-btn" onclick="setFilter('none',this)">? Not set</button>
+      <button class="filter-btn" onclick="setFilter('R',this)">★ Required</button>
+      <button class="filter-btn" onclick="setFilter('S',this)">⇄ Shareable</button>
+      <button class="filter-btn" onclick="setFilter('O',this)">◦ Optional</button>
+    </div>
+    <div id="inv-list"></div>
   </div>
-  <div class="filter-bar">
-    <button class="filter-btn active" onclick="setFilter('a',this)">All</button>
-    <button class="filter-btn" onclick="setFilter('own',this)">✓ Own</button>
-    <button class="filter-btn" onclick="setFilter('buy',this)">$ Buy</button>
-    <button class="filter-btn" onclick="setFilter('borrow',this)">↗ Borrow</button>
-    <button class="filter-btn" onclick="setFilter('none',this)">? Not set</button>
-    <button class="filter-btn" onclick="setFilter('R',this)">★ Required</button>
-    <button class="filter-btn" onclick="setFilter('S',this)">⇄ Shareable</button>
-    <button class="filter-btn" onclick="setFilter('O',this)">◦ Optional</button>
-  </div>
-  <div id="inv-list"></div>
-</div>
 
-<div id="trips" class="section">
-  <select id="trip-select" onchange="renderTrip()">
-    <option value="">— Select a trip —</option>
-  </select>
-  <div class="trip-stats" id="trip-stats" style="display:none"></div>
-  <div id="trip-list"></div>
-</div>
+  <!-- TRIPS -->
+  <div id="trips" class="section">
+    <select id="trip-select" onchange="renderTrip()">
+      <option value="">— Select a trip —</option>
+    </select>
+    <div class="trip-stats" id="trip-stats" style="display:none"></div>
+    <div id="trip-list"></div>
+  </div>
+
+  <!-- KNOTS -->
+  <div id="knots" class="section">
+    <div class="card knot-header-card">
+      <div class="knot-progress-row">
+        <div class="progress-bar" style="flex:1;margin:0"><div class="progress-fill" id="knot-bar" style="width:0%"></div></div>
+        <div class="knot-count" id="knot-count">0 / 13 learned</div>
+      </div>
+    </div>
+    <div id="knot-list"></div>
+  </div>
 </main>
 
 <div id="install-banner">
@@ -159,17 +190,13 @@ select{background:var(--card);border:1.5px solid var(--border);color:var(--text)
 </div>
 
 <script>
-// ── GEAR DATA from CSV ──────────────────────────────────────────────────────
-// Columns: cat, name, qty, required (R/O/S), link, MtSi, GS, MtErie, V, S1, A12, S2, MB
+// ── DATA ─────────────────────────────────────────────────────────────────────
 const GEAR = [
-  // PACKS
   ["Packs","Medium backpack (35-40L)","1","R","https://www.rei.com/c/hiking-backpacks","R","R","R","R","R","R","",""],
   ["Packs","Large backpack (50-60L)","1","R","https://www.rei.com/c/hiking-backpacks","","","","","R","R","R","R"],
-  // FOOTWEAR
   ["Footwear","Mountaineering boots","1","R","https://www.rei.com/c/mountaineering-boots","R","R","R","R","R","R","R","R"],
   ["Footwear","Climbing shoes","1","O","","","","","O","","","",""],
   ["Footwear","Light hikers / trail shoes","1","O","","O","O","","","","","",""],
-  // CLOTHING
   ["Clothing","Heavy socks","2","R","https://www.rei.com/c/hiking-socks","R","R","R","R","R","R","R","R"],
   ["Clothing","Liner gloves","2","R","https://www.rei.com/c/gloves-mittens","R","R","R","R","R","R","R","R"],
   ["Clothing","Winter gloves","1","R","https://www.rei.com/c/gloves-mittens","R","R","R","R","R","R","R","R"],
@@ -189,7 +216,6 @@ const GEAR = [
   ["Clothing","Heavy winter overmitts","1","O","https://www.rei.com/c/gloves-mittens","O","O","O","O","O","O","O","O"],
   ["Clothing","Liner socks","2","O","","O","O","O","O","O","O","O","O"],
   ["Clothing","Bandana","1","O","","O","O","O","O","O","O","O","O"],
-  // ESSENTIALS
   ["Essentials","Personal first aid kit","1","R","https://www.rei.com/c/first-aid-kits","R","R","R","R","R","R","R","R"],
   ["Essentials","LED headlamp + extra batteries","1","R","https://www.rei.com/c/headlamps","R","R","R","R","R","R","R","R"],
   ["Essentials","Compass (adjustable declination)","1","R","https://www.rei.com/c/compasses","R","R","R","R","R","R","R","R"],
@@ -209,7 +235,6 @@ const GEAR = [
   ["Essentials","Hand warmers","1","O","https://www.rei.com/c/hand-warmers","O","O","O","O","O","O","O","O"],
   ["Essentials","Toe warmers","1","O","","O","O","O","O","O","O","O","O"],
   ["Essentials","Ground cloth / small tarp","1","O","","","O","O","O","","O","O",""],
-  // SNOW CAMPING
   ["Snow Camping","Sleeping pad (full length)","1","R","https://www.rei.com/c/sleeping-pads","","","","","R","R","R","R"],
   ["Snow Camping","Sleeping bag (~15°F)","1","R","https://www.rei.com/c/sleeping-bags","","","","","R","R","R","R"],
   ["Snow Camping","Tent","1","S","https://www.rei.com/c/tents","","","","","R","R","R","R"],
@@ -223,7 +248,6 @@ const GEAR = [
   ["Snow Camping","Pack towel","1","O","","","","","","O","O","O","O"],
   ["Snow Camping","Down booties","1","O","https://www.rei.com/c/camp-booties","","","","","O","O","O","O"],
   ["Snow Camping","Sit pad","1","O","","","","","","O","O","O","O"],
-  // TECHNICAL GEAR
   ["Technical Gear","Practice rope","1","R","","R","","","","R","R","",""],
   ["Technical Gear","Climbing harness","1","R","https://www.rei.com/c/climbing-harnesses","R","R","R","R","R","R","R","R"],
   ["Technical Gear","Climbing helmet","1","R","https://www.rei.com/c/climbing-helmets","","R","R","R","R","R","R","R"],
@@ -242,195 +266,275 @@ const GEAR = [
   ["Technical Gear","Crampons (STEEL)","1","R","https://www.rei.com/c/crampons","","","","","R","R","","R"],
   ["Technical Gear","Snow picket 24\"","1","R","","","","","","R","R","R","R"],
   ["Technical Gear","Wands (×8)","8","S","","","","","","R","R","",""],
-  // OTHER GEAR
   ["Other Gear","Micro spikes","1","O","https://www.rei.com/c/microspikes","O","","","","","","",""],
   ["Other Gear","Snow goggles","1","O","https://www.rei.com/c/ski-goggles","","","","","O","O","","O"],
   ["Other Gear","Clear goggles","1","O","","","","","","O","O","",""],
 ];
 
 const TRIPS = ["Mt Si","Ground School","Mt Erie","Vantage","Snow 1 (overnight)","Alpine 1 & 2","Snow 2 (overnight - car camping)","Mt Baker (overnight)"];
-const TRIP_IDX = [5,6,7,8,9,10,11,12]; // indices into each gear row
+const TRIP_COL = [5,6,7,8,9,10,11,12];
 
-let state = {}, packState = {}, activeFilter = 'a';
+const KNOTS = [
+  { name:"Overhand Knot", link:"https://photos.google.com/share/AF1QipOKUXQqcU62nsPp3b4Hk7eobxtf9nQ51GO9igY70sMQBiqCI0ogDwWXZDzvde5ZOQ/photo/AF1QipPP8uK1SsNsnEIqxAKm2nwwsi8YbE1-pbOVXLgc?key=YmEwMUxUejFrQXlBUWEybnZudE45Sk1MT1E3d3h3", notes:["Freedom of the Hills, 9th Edition: page 155"] },
+  { name:"Girth Hitch", link:"https://photos.google.com/share/AF1QipOKUXQqcU62nsPp3b4Hk7eobxtf9nQ51GO9igY70sMQBiqCI0ogDwWXZDzvde5ZOQ/photo/AF1QipMc8vXCD7bppFHVD1OucIARTBwGH92gTSQWi7sP?key=YmEwMUxUejFrQXlBUWEybnZudE45Sk1MT1E3d3h3", notes:["Quickly attaching webbing/cord to something (e.g. your pack, a natural anchor)","Attaching Personal Anchor System (PAS) to harness","Freedom of the Hills, 9th Edition: page 159"] },
+  { name:"Rewoven Figure 8", link:"https://photos.google.com/share/AF1QipOKUXQqcU62nsPp3b4Hk7eobxtf9nQ51GO9igY70sMQBiqCI0ogDwWXZDzvde5ZOQ/photo/AF1QipP4LbQO6bkBBpa9BLDQPdojabK8_FVRII6YiKBd?key=YmEwMUxUejFrQXlBUWEybnZudE45Sk1MT1E3d3h3", notes:["Use for: tying into your climbing harness","For the WAC Way, finish with an overhand knot — this verifies you have enough tail","FOTH instructs a tail at least the length of the knot — consider this a bare minimum"] },
+  { name:"Figure 8 on a Bight", link:"https://photos.google.com/share/AF1QipOKUXQqcU62nsPp3b4Hk7eobxtf9nQ51GO9igY70sMQBiqCI0ogDwWXZDzvde5ZOQ/photo/AF1QipOd9DeYSjTYNYp3ifrVOJX5inZb5T6Kc6_9K4Da?key=YmEwMUxUejFrQXlBUWEybnZudE45Sk1MT1E3d3h3", notes:["Freedom of the Hills, Ed. 9: page 157","Use for: cleaning at the top of a climb with the 'thread and lower' technique","Use for: tying into the middle of a rope (e.g. for glacier travel)","Use for: backup knot during Z-Pulley"] },
+  { name:"Stopper Knot", link:"https://photos.google.com/share/AF1QipOKUXQqcU62nsPp3b4Hk7eobxtf9nQ51GO9igY70sMQBiqCI0ogDwWXZDzvde5ZOQ/photo/AF1QipOAJ-bjxXZpSaxXgvb1G-VYOO9Yb-o4s7Rt9-1U?key=YmEwMUxUejFrQXlBUWEybnZudE45Sk1MT1E3d3h3", notes:["Freedom of the Hills, Ed. 9: page 209","Use on end(s) of rope when belaying or rappelling","Tail: FOTH recommends at least 4 inches — personally recommend 12-18 inches"] },
+  { name:"Opposite and Opposed Carabiners", link:"https://photos.google.com/share/AF1QipOKUXQqcU62nsPp3b4Hk7eobxtf9nQ51GO9igY70sMQBiqCI0ogDwWXZDzvde5ZOQ/photo/AF1QipNYn7G4yFwbT4k1jzKanoCGvSDkvwkcoTpKXtOU?key=YmEwMUxUejFrQXlBUWEybnZudE45Sk1MT1E3d3h3", notes:["Freedom of the Hills, 9th Edition: page 170"] },
+  { name:"Water Knot", link:"https://photos.google.com/share/AF1QipOKUXQqcU62nsPp3b4Hk7eobxtf9nQ51GO9igY70sMQBiqCI0ogDwWXZDzvde5ZOQ/photo/AF1QipPVKmK-KrIYItbawfRWu7Aqz2Ocne3SzANswLkg?key=YmEwMUxUejFrQXlBUWEybnZudE45Sk1MT1E3d3h3", notes:["Freedom of the Hills, Ed. 9: page 156","Tail length: minimum 2-3 inches according to FOTH"] },
+  { name:"Double Fisherman's", link:"https://photos.google.com/share/AF1QipOKUXQqcU62nsPp3b4Hk7eobxtf9nQ51GO9igY70sMQBiqCI0ogDwWXZDzvde5ZOQ/photo/AF1QipM7Va7-cwQW7QNmXXQaRu6Vgfbn6m9gkhHe8nUG?key=YmEwMUxUejFrQXlBUWEybnZudE45Sk1MT1E3d3h3", notes:["Freedom of the Hills, Ed. 9: page 157","Tail: 2-3 inches for prusik cords","Tail: 5-6 times the diameter of the cord","Note: FOTH doesn't specify tail length"] },
+  { name:"Prusik", link:"https://photos.google.com/share/AF1QipOKUXQqcU62nsPp3b4Hk7eobxtf9nQ51GO9igY70sMQBiqCI0ogDwWXZDzvde5ZOQ/photo/AF1QipNN-vJ7PgLU7qWQ-F2qHUyX0d0YqADM7qS0wklk?key=YmEwMUxUejFrQXlBUWEybnZudE45Sk1MT1E3d3h3", notes:["Freedom of the Hills, Ed. 9: page 161","Use for: crevasse rescue","Use for: prusiking into a handline","Use for: progress capture during Z-Pulley","Sometimes seen as a third-hand while rappelling — not taught in BCC"] },
+  { name:"Autoblock", link:"https://photos.google.com/share/AF1QipOKUXQqcU62nsPp3b4Hk7eobxtf9nQ51GO9igY70sMQBiqCI0ogDwWXZDzvde5ZOQ/photo/AF1QipP01gvX5dM8Tq-pGdgNWe6RtSolDH9aqlWXlpHt?key=YmEwMUxUejFrQXlBUWEybnZudE45Sk1MT1E3d3h3", notes:["Freedom of the Hills, Ed. 9: page 162","Use for: 3rd hand while rappelling"] },
+  { name:"Clove Hitch", link:"https://photos.google.com/share/AF1QipOKUXQqcU62nsPp3b4Hk7eobxtf9nQ51GO9igY70sMQBiqCI0ogDwWXZDzvde5ZOQ/photo/AF1QipMBm5TpLvPJT7hLLb0khoPiSY-oLhzvOHnESg2e?key=YmEwMUxUejFrQXlBUWEybnZudE45Sk1MT1E3d3h3", notes:["Freedom of the Hills, Ed. 9: page 159","Use for: fixing a point on the rope to a carabiner","Use for: cleaning anchors during thread-and-lower","Use for: progress capture when prusiking out of a crevasse"] },
+  { name:"Munter", link:"https://photos.google.com/share/AF1QipOKUXQqcU62nsPp3b4Hk7eobxtf9nQ51GO9igY70sMQBiqCI0ogDwWXZDzvde5ZOQ/photo/AF1QipNHIFBXlOHVw3WYm5Kyx4UfFC8-A3MeRP1yVXK5?key=YmEwMUxUejFrQXlBUWEybnZudE45Sk1MT1E3d3h3", notes:["Freedom of the Hills, Ed. 9: page 163","⚠ Brake strand should NEVER run over the gate of the carabiner — this is extremely dangerous"] },
+  { name:"Klemheist", link:"https://photos.google.com/share/AF1QipOKUXQqcU62nsPp3b4Hk7eobxtf9nQ51GO9igY70sMQBiqCI0ogDwWXZDzvde5ZOQ/photo/AF1QipONE3KdkOOORXLfYWMw1OvksGQkwPeChSSpQw40?key=YmEwMUxUejFrQXlBUWEybnZudE45Sk1MT1E3d3h3", notes:["Freedom of the Hills, 9th Edition: page 162","Correction: video mistakenly says Dyneema runner should be avoided","Dyneema has a low melting point — high friction degrades strength","OK for Dyneema: holding/fixing a rope strand (low/no friction)","Avoid for Dyneema: ascending a rope or use as third hand for rappelling (high friction)"] },
+];
+
+// ── STATE ─────────────────────────────────────────────────────────────────────
+var state = {}, packState = {}, knotState = {}, activeFilter = 'all';
 
 function load() {
-  try { state = JSON.parse(localStorage.getItem('wac-closet')||'{}'); } catch(e){}
-  try { packState = JSON.parse(localStorage.getItem('wac-pack')||'{}'); } catch(e){}
+  try { state = JSON.parse(localStorage.getItem('wac-closet') || '{}'); } catch(e) {}
+  try { packState = JSON.parse(localStorage.getItem('wac-pack') || '{}'); } catch(e) {}
+  try { knotState = JSON.parse(localStorage.getItem('wac-knots') || '{}'); } catch(e) {}
 }
 function save() {
   localStorage.setItem('wac-closet', JSON.stringify(state));
   localStorage.setItem('wac-pack', JSON.stringify(packState));
+  localStorage.setItem('wac-knots', JSON.stringify(knotState));
 }
+
+// ── NAV ───────────────────────────────────────────────────────────────────────
 function showTab(t, btn) {
-  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
-  document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.section').forEach(function(s){ s.classList.remove('active'); });
+  document.querySelectorAll('nav button').forEach(function(b){ b.classList.remove('active'); });
   document.getElementById(t).classList.add('active');
   btn.classList.add('active');
 }
-function setFilter(f, btn) {
-  activeFilter = f;
-  document.querySelectorAll('.filter-btn').forEach(b=>b.className='filter-btn');
-  btn.classList.add('f'+f);
-  renderInventory();
-}
-function setStatus(idx, val) {
-  state[idx] = (state[idx]===val) ? '' : val;
-  save(); renderInventory();
-}
 
+// ── CLOSET ────────────────────────────────────────────────────────────────────
 function reqTypeBadge(r) {
-  if(r==='R') return `<span class="req-type-badge rt-r">Required</span>`;
-  if(r==='O') return `<span class="req-type-badge rt-o">Optional</span>`;
-  if(r==='S') return `<span class="req-type-badge rt-s">Shareable</span>`;
+  if (r === 'R') return '<span class="req-type-badge rt-r">Required</span>';
+  if (r === 'O') return '<span class="req-type-badge rt-o">Optional</span>';
+  if (r === 'S') return '<span class="req-type-badge rt-s">Shareable</span>';
   return '';
 }
 
-function renderInventory() {
-  const cats = [...new Set(GEAR.map(g=>g[0]))];
-  const total = GEAR.length;
-  const owned = GEAR.filter((_,i)=>state[i]==='own').length;
-  const pct = Math.round(owned/total*100);
-  document.getElementById('inv-label').textContent =
-    `${owned} of ${total} items owned (${pct}%)  ·  `+
-    `${GEAR.filter((_,i)=>state[i]==='buy').length} to buy  ·  `+
-    `${GEAR.filter((_,i)=>state[i]==='borrow').length} to borrow`;
-  document.getElementById('inv-bar').style.width = pct+'%';
-
-  let html='', total_vis=0;
-  cats.forEach(cat=>{
-    const items = GEAR.map((g,i) => ({g,i})).filter(({g,i}) => {
-      if (g[0] !== cat) return false;
-      if (activeFilter === 'a')      return true;
-      if (activeFilter === 'own')    return state[i] === 'own';
-      if (activeFilter === 'buy')    return state[i] === 'buy';
-      if (activeFilter === 'borrow') return state[i] === 'borrow';
-      if (activeFilter === 'none')   return !state[i];
-      if (activeFilter === 'R')      return g[3] === 'R';
-      if (activeFilter === 'S')      return g[3] === 'S';
-      if (activeFilter === 'O')      return g[3] === 'O';
-      return true;
-    });
-    if(!items.length) return;
-    total_vis += items.length;
-    html += `<div class="category-label">${cat}</div>`;
-    items.forEach(({g,i})=>{
-      const s=state[i]||'';
-      const [,name,qty,req,link]=g;
-      html+=`<div class="gear-row">
-        <div class="gear-name">${name} ${reqTypeBadge(req)}
-          ${qty&&qty!=='1'?`<span class="qty-badge">×${qty}</span>`:''}
-          ${link?`<a href="${link}" target="_blank">↗</a>`:''}
-        </div>
-        <div class="status-btn">
-          <button class="btn-own ${s==='own'?'sel':''}" onclick="setStatus(${i},'own')">Own</button>
-          <button class="btn-buy ${s==='buy'?'sel':''}" onclick="setStatus(${i},'buy')">Buy</button>
-          <button class="btn-borrow ${s==='borrow'?'sel':''}" onclick="setStatus(${i},'borrow')">Borrow</button>
-        </div>
-      </div>`;
-    });
-  });
-  if(!total_vis) html=`<div class="empty-msg">No items match this filter.</div>`;
-  document.getElementById('inv-list').innerHTML=html;
+function setFilter(val, btn) {
+  activeFilter = val;
+  document.querySelectorAll('#filter-bar .filter-btn').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+  renderInventory();
 }
 
+function setStatus(idx, val) {
+  state[idx] = (state[idx] === val) ? '' : val;
+  save();
+  renderInventory();
+}
+
+function renderInventory() {
+  var cats = [];
+  GEAR.forEach(function(g){ if (cats.indexOf(g[0]) === -1) cats.push(g[0]); });
+  var total = GEAR.length;
+  var owned = GEAR.filter(function(g, i){ return state[i] === 'own'; }).length;
+  var pct = Math.round(owned / total * 100);
+  document.getElementById('inv-label').textContent =
+    owned + ' of ' + total + ' items owned (' + pct + '%)  ·  ' +
+    GEAR.filter(function(g,i){ return state[i]==='buy'; }).length + ' to buy  ·  ' +
+    GEAR.filter(function(g,i){ return state[i]==='borrow'; }).length + ' to borrow';
+  document.getElementById('inv-bar').style.width = pct + '%';
+
+  var html = '', totalVisible = 0;
+  cats.forEach(function(cat) {
+    var items = [];
+    GEAR.forEach(function(g, i) {
+      if (g[0] !== cat) return;
+      if (activeFilter === 'all') { items.push({g:g,i:i}); return; }
+      if (activeFilter === 'own'    && state[i] === 'own')    { items.push({g:g,i:i}); return; }
+      if (activeFilter === 'buy'    && state[i] === 'buy')    { items.push({g:g,i:i}); return; }
+      if (activeFilter === 'borrow' && state[i] === 'borrow') { items.push({g:g,i:i}); return; }
+      if (activeFilter === 'none'   && !state[i])             { items.push({g:g,i:i}); return; }
+      if (activeFilter === 'R'      && g[3] === 'R')          { items.push({g:g,i:i}); return; }
+      if (activeFilter === 'S'      && g[3] === 'S')          { items.push({g:g,i:i}); return; }
+      if (activeFilter === 'O'      && g[3] === 'O')          { items.push({g:g,i:i}); return; }
+    });
+    if (!items.length) return;
+    totalVisible += items.length;
+    html += '<div class="category-label">' + cat + '</div>';
+    items.forEach(function(item) {
+      var g = item.g, i = item.i;
+      var s = state[i] || '';
+      var name = g[1], qty = g[2], req = g[3], link = g[4];
+      html += '<div class="gear-row">' +
+        '<div class="gear-name">' + name + reqTypeBadge(req) +
+          (qty && qty !== '1' ? ' <span class="qty-badge">×' + qty + '</span>' : '') +
+          (link ? ' <a href="' + link + '" target="_blank">↗</a>' : '') +
+        '</div>' +
+        '<div class="status-btn">' +
+          '<button class="btn-own '  + (s==='own'?'sel':'')    + '" onclick="setStatus(' + i + ',\'own\')">Own</button>' +
+          '<button class="btn-buy '  + (s==='buy'?'sel':'')    + '" onclick="setStatus(' + i + ',\'buy\')">Buy</button>' +
+          '<button class="btn-borrow '+(s==='borrow'?'sel':'')+'" onclick="setStatus(' + i + ',\'borrow\')">Borrow</button>' +
+        '</div>' +
+      '</div>';
+    });
+  });
+  if (!totalVisible) html = '<div class="empty-msg">No items match this filter.</div>';
+  document.getElementById('inv-list').innerHTML = html;
+}
+
+// ── TRIPS ─────────────────────────────────────────────────────────────────────
 function populateTripSelect() {
-  const sel=document.getElementById('trip-select');
-  TRIPS.forEach((t,i)=>{const o=document.createElement('option');o.value=i;o.textContent=t;sel.appendChild(o);});
+  var sel = document.getElementById('trip-select');
+  TRIPS.forEach(function(t, i) {
+    var o = document.createElement('option');
+    o.value = i; o.textContent = t;
+    sel.appendChild(o);
+  });
 }
 
 function togglePack(ti, gi) {
-  const k=`${ti}:${gi}`;
-  packState[k]=!packState[k];
+  var k = ti + ':' + gi;
+  packState[k] = !packState[k];
   save(); renderTrip();
 }
+
 function resetPacking() {
-  const ti=document.getElementById('trip-select').value;
-  if(ti==='') return;
-  Object.keys(packState).forEach(k=>{if(k.startsWith(ti+':'))delete packState[k];});
+  var ti = document.getElementById('trip-select').value;
+  if (ti === '') return;
+  Object.keys(packState).forEach(function(k){ if (k.indexOf(ti + ':') === 0) delete packState[k]; });
   save(); renderTrip();
 }
 
 function renderTrip() {
-  const val=document.getElementById('trip-select').value;
-  const statsDiv=document.getElementById('trip-stats');
-  const listDiv=document.getElementById('trip-list');
-  if(val===''){statsDiv.style.display='none';listDiv.innerHTML='';return;}
-  const ti=parseInt(val);
-  const col=TRIP_IDX[ti];
+  var val = document.getElementById('trip-select').value;
+  var statsDiv = document.getElementById('trip-stats');
+  var listDiv = document.getElementById('trip-list');
+  if (val === '') { statsDiv.style.display = 'none'; listDiv.innerHTML = ''; return; }
+  var ti = parseInt(val);
+  var col = TRIP_COL[ti];
+  var items = [];
+  GEAR.forEach(function(g, i){ if (g[col] === 'R' || g[col] === 'O') items.push({g:g,i:i}); });
+  var required = items.filter(function(item){ return item.g[col] === 'R'; });
+  var packed = items.filter(function(item){ return !!packState[ti + ':' + item.i]; });
+  var flagged = required.filter(function(item){ return !state[item.i]; });
 
-  const items=GEAR.map((g,i)=>({g,i})).filter(({g})=>g[col]==='R'||g[col]==='O');
-  const required=items.filter(({g})=>g[col]==='R');
-  const packed=items.filter(({i})=>packState[`${ti}:${i}`]);
-  const flagged=required.filter(({i})=>!state[i]);
+  statsDiv.style.display = 'flex';
+  statsDiv.innerHTML =
+    '<div class="stat-chip">Packed <span>' + packed.length + '/' + items.length + '</span></div>' +
+    '<div class="stat-chip">Required <span style="color:var(--red)">' + required.length + '</span></div>' +
+    '<div class="stat-chip">Optional <span style="color:var(--blue)">' + (items.length - required.length) + '</span></div>' +
+    (flagged.length ? '<div class="stat-chip">⚠️ Missing <span style="color:var(--amber)">' + flagged.length + '</span></div>' : '') +
+    '<button onclick="resetPacking()" style="margin-left:auto;background:var(--border);border:none;padding:5px 10px;border-radius:8px;cursor:pointer;font-size:12px;color:var(--muted)">Reset</button>';
 
-  statsDiv.style.display='flex';
-  statsDiv.innerHTML=
-    `<div class="stat-chip">Packed <span>${packed.length}/${items.length}</span></div>`+
-    `<div class="stat-chip">Required <span style="color:var(--red)">${required.length}</span></div>`+
-    `<div class="stat-chip">Optional <span style="color:var(--blue)">${items.length-required.length}</span></div>`+
-    (flagged.length?`<div class="stat-chip">⚠️ Missing <span style="color:var(--amber)">${flagged.length}</span></div>`:'')+
-    `<button onclick="resetPacking()" style="margin-left:auto;background:var(--border);border:none;padding:5px 10px;border-radius:8px;cursor:pointer;font-size:12px;color:var(--muted)">Reset</button>`;
-
-  const cats=[...new Set(items.map(({g})=>g[0]))];
-  let html='';
-  ['R','O'].forEach(rt=>{
-    const grouped=cats.map(c=>({cat:c,items:items.filter(({g})=>g[0]===c&&g[col]===rt)})).filter(g=>g.items.length);
-    if(!grouped.length) return;
-    html+=`<div class="card"><div class="section-head"><h2>${rt==='R'?'Required gear':'Optional gear'}</h2><div class="wac-stripe"></div></div>`;
-    grouped.forEach(({cat,items:its})=>{
-      html+=`<div class="category-label">${cat}</div>`;
-              its.forEach(({g,i})=>{
-        const pk=`${ti}:${i}`;
-        const isPacked=!!packState[pk];
-        const notAcq=rt==='R'&&!state[i];
-        const [,name,qty,,link]=g;
-        const statusBadge = state[i]==='own'
-          ? `<span class="req-type-badge" style="background:#e8f5e9;color:var(--green)">✓ Own</span>`
-          : state[i]==='buy'
-          ? `<span class="req-type-badge" style="background:#fff3e0;color:var(--amber)">$ Buy</span>`
-          : state[i]==='borrow'
-          ? `<span class="req-type-badge" style="background:#ede7f6;color:var(--purple)">↗ Borrow</span>`
-          : `<span class="req-type-badge" style="background:var(--border);color:var(--muted)">? Not set</span>`;
-        html+=`<div class="pack-row">
-          <div class="pack-check"><input type="checkbox" ${isPacked?'checked':''} onchange="togglePack(${ti},${i})"></div>
-          <div class="pack-name ${isPacked?'packed':''}">${name}${qty&&qty!=='1'?` <span class="qty-badge">×${qty}</span>`:''}${link?` <a href="${link}" target="_blank" style="color:var(--blue);font-size:12px">↗</a>`:''}</div>
-          ${statusBadge}
-          ${notAcq?`<span class="flag-badge">⚠ Not acquired</span>`:''}
-        </div>`;
+  var cats = [];
+  items.forEach(function(item){ if (cats.indexOf(item.g[0]) === -1) cats.push(item.g[0]); });
+  var html = '';
+  ['R','O'].forEach(function(rt) {
+    var grouped = cats.map(function(c){
+      return { cat:c, items:items.filter(function(item){ return item.g[0]===c && item.g[col]===rt; }) };
+    }).filter(function(g){ return g.items.length; });
+    if (!grouped.length) return;
+    html += '<div class="card"><div class="section-head"><h2>' + (rt==='R'?'Required gear':'Optional gear') + '</h2><div class="wac-stripe"></div></div>';
+    grouped.forEach(function(group) {
+      html += '<div class="category-label">' + group.cat + '</div>';
+      group.items.forEach(function(item) {
+        var g = item.g, i = item.i;
+        var isPacked = !!packState[ti + ':' + i];
+        var notAcq = rt === 'R' && !state[i];
+        var s = state[i];
+        var statusBadge = s === 'own'
+          ? '<span class="status-badge" style="background:#e8f5e9;color:var(--green)">✓ Own</span>'
+          : s === 'buy'
+          ? '<span class="status-badge" style="background:#fff3e0;color:var(--amber)">$ Buy</span>'
+          : s === 'borrow'
+          ? '<span class="status-badge" style="background:#ede7f6;color:var(--purple)">↗ Borrow</span>'
+          : '<span class="status-badge" style="background:var(--border);color:var(--muted)">? Not set</span>';
+        html += '<div class="pack-row">' +
+          '<div class="pack-check"><input type="checkbox"' + (isPacked?' checked':'') + ' onchange="togglePack(' + ti + ',' + i + ')"></div>' +
+          '<div class="pack-name' + (isPacked?' packed':'') + '">' + g[1] +
+            (g[2]&&g[2]!=='1' ? ' <span class="qty-badge">×'+g[2]+'</span>' : '') +
+            (g[4] ? ' <a href="'+g[4]+'" target="_blank" style="color:var(--blue);font-size:12px">↗</a>' : '') +
+          '</div>' +
+          statusBadge +
+          (notAcq ? '<span class="flag-badge">⚠ Not acquired</span>' : '') +
+        '</div>';
       });
     });
-    html+='</div>';
+    html += '</div>';
   });
-  listDiv.innerHTML=html;
+  listDiv.innerHTML = html;
 }
 
-// PWA install
-let deferredPrompt;
-window.addEventListener('beforeinstallprompt',e=>{
-  e.preventDefault(); deferredPrompt=e;
-  if(!localStorage.getItem('wac-install-dismissed'))
-    document.getElementById('install-banner').style.display='flex';
+// ── KNOTS ─────────────────────────────────────────────────────────────────────
+function toggleKnot(i) {
+  knotState[i] = !knotState[i];
+  save();
+  renderKnots();
+}
+
+function toggleNotes(i) {
+  var notes = document.getElementById('kn-' + i);
+  var caret = document.getElementById('kc-' + i);
+  notes.classList.toggle('open');
+  caret.classList.toggle('open');
+}
+
+function renderKnots() {
+  var learned = KNOTS.filter(function(k, i){ return !!knotState[i]; }).length;
+  var pct = Math.round(learned / KNOTS.length * 100);
+  document.getElementById('knot-bar').style.width = pct + '%';
+  document.getElementById('knot-count').textContent = learned + ' / ' + KNOTS.length + ' learned';
+  var html = '';
+  KNOTS.forEach(function(k, i) {
+    var isLearned = !!knotState[i];
+    var notesHtml = k.notes.map(function(n){
+      var warn = n.charAt(0) === '⚠';
+      return '<li' + (warn?' class="warn"':'') + '>' + n + '</li>';
+    }).join('');
+    html += '<div class="knot-row">' +
+      '<div class="knot-main" onclick="toggleNotes(' + i + ')">' +
+        '<input type="checkbox"' + (isLearned?' checked':'') + ' onclick="event.stopPropagation();toggleKnot(' + i + ')">' +
+        '<span class="knot-name' + (isLearned?' learned':'') + '">' + k.name + '</span>' +
+        '<a class="knot-link" href="' + k.link + '" target="_blank" onclick="event.stopPropagation()">↗</a>' +
+        '<button class="knot-caret" id="kc-' + i + '" onclick="event.stopPropagation();toggleNotes(' + i + ')">▾</button>' +
+      '</div>' +
+      '<div class="knot-notes" id="kn-' + i + '"><ul>' + notesHtml + '</ul></div>' +
+    '</div>';
+  });
+  document.getElementById('knot-list').innerHTML = html;
+}
+
+// ── PWA INSTALL ───────────────────────────────────────────────────────────────
+var deferredPrompt;
+window.addEventListener('beforeinstallprompt', function(e) {
+  e.preventDefault(); deferredPrompt = e;
+  if (!localStorage.getItem('wac-install-dismissed'))
+    document.getElementById('install-banner').style.display = 'flex';
 });
-document.getElementById('btn-install-do').addEventListener('click',async()=>{
-  if(!deferredPrompt) return;
+document.getElementById('btn-install-do').addEventListener('click', function() {
+  if (!deferredPrompt) return;
   deferredPrompt.prompt();
-  await deferredPrompt.userChoice;
-  deferredPrompt=null;
-  document.getElementById('install-banner').style.display='none';
+  deferredPrompt.userChoice.then(function(){ deferredPrompt = null; });
+  document.getElementById('install-banner').style.display = 'none';
 });
-function dismissInstall(){
-  document.getElementById('install-banner').style.display='none';
-  localStorage.setItem('wac-install-dismissed','1');
+function dismissInstall() {
+  document.getElementById('install-banner').style.display = 'none';
+  localStorage.setItem('wac-install-dismissed', '1');
 }
 
-// Service worker
-if('serviceWorker' in navigator){
-  const sw=`const C='wac-v2';self.addEventListener('install',e=>{e.waitUntil(caches.open(C).then(c=>c.addAll(['/'])));self.skipWaiting();});self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==C).map(k=>caches.delete(k)))));self.clients.claim();});self.addEventListener('fetch',e=>{e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request).then(res=>{const cl=res.clone();caches.open(C).then(c=>c.put(e.request,cl));return res;}).catch(()=>caches.match('/'))));});`;
-  const blob=new Blob([sw],{type:'application/javascript'});
-  navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(()=>{});
+// ── SERVICE WORKER ────────────────────────────────────────────────────────────
+if ('serviceWorker' in navigator) {
+  var sw = "const C='wac-v2';self.addEventListener('install',e=>{e.waitUntil(caches.open(C).then(c=>c.addAll(['/'])));self.skipWaiting();});self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==C).map(k=>caches.delete(k)))));self.clients.claim();});self.addEventListener('fetch',e=>{e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request).then(res=>{const cl=res.clone();caches.open(C).then(c=>c.put(e.request,cl));return res;}).catch(()=>caches.match('/'))));});";
+  var blob = new Blob([sw], {type:'application/javascript'});
+  navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(function(){});
 }
 
-load(); renderInventory(); populateTripSelect();
+// ── INIT ──────────────────────────────────────────────────────────────────────
+load();
+renderInventory();
+populateTripSelect();
+renderKnots();
 </script>
 </body>
 </html>
