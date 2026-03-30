@@ -231,6 +231,7 @@ const GEAR = [
   ["Essentials","Emergency bivy bag","1","R","https://www.rei.com/c/bivy-sacks","R","R","R","","R","R","",""],
   ["Essentials","Trekking poles","1","R","https://www.rei.com/c/trekking-poles","R","R","R","","R","R","",""],
   ["Essentials","Food and water (min 3L)","varies","R","","R","R","R","R","R","R","R","R"],
+  ["Essentials","Leukotape","1","O","https://www.amazon.com/BSN-Medical-BEI076168-Leukotape-Sports/dp/B000E59HXC","O","O","O","O","O","O","O","O"],
   ["Essentials","Hand sanitizer","1","O","","O","O","O","O","O","O","O","O"],
   ["Essentials","Hand warmers","1","O","https://www.rei.com/c/hand-warmers","O","O","O","O","O","O","O","O"],
   ["Essentials","Toe warmers","1","O","","O","O","O","O","O","O","O","O"],
@@ -525,7 +526,7 @@ function dismissInstall() {
 
 // ── SERVICE WORKER ────────────────────────────────────────────────────────────
 if ('serviceWorker' in navigator) {
-  var sw = "const C='wac-v2';self.addEventListener('install',e=>{e.waitUntil(caches.open(C).then(c=>c.addAll(['/'])));self.skipWaiting();});self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==C).map(k=>caches.delete(k)))));self.clients.claim();});self.addEventListener('fetch',e=>{e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request).then(res=>{const cl=res.clone();caches.open(C).then(c=>c.put(e.request,cl));return res;}).catch(()=>caches.match('/'))));});";
+  var sw = "const C='wac-v3';self.addEventListener('install',e=>{e.waitUntil(caches.open(C).then(c=>c.addAll(['/'])));self.skipWaiting();});self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==C).map(k=>caches.delete(k)))));self.clients.claim();});self.addEventListener('fetch',e=>{e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request).then(res=>{const cl=res.clone();caches.open(C).then(c=>c.put(e.request,cl));return res;}).catch(()=>caches.match('/'))));});";
   var blob = new Blob([sw], {type:'application/javascript'});
   navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(function(){});
 }
