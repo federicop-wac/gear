@@ -176,7 +176,7 @@ select{background:var(--card);border:1.5px solid var(--border);color:var(--text)
     <div class="card knot-header-card">
       <div class="knot-progress-row">
         <div class="progress-bar" style="flex:1;margin:0"><div class="progress-fill" id="knot-bar" style="width:0%"></div></div>
-        <div class="knot-count" id="knot-count">0 / 13 learned</div>
+        <div class="knot-count" id="knot-count">0 / 29 learned</div>
       </div>
     </div>
     <div id="knot-list"></div>
@@ -276,19 +276,53 @@ const TRIPS = ["Mt Si","Ground School","Mt Erie","Vantage","Snow 1 (overnight)",
 const TRIP_COL = [5,6,7,8,9,10,11,12];
 
 const KNOTS = [
-  { name:"Overhand Knot", link:"https://photos.google.com/share/AF1QipOKUXQqcU62nsPp3b4Hk7eobxtf9nQ51GO9igY70sMQBiqCI0ogDwWXZDzvde5ZOQ/photo/AF1QipPP8uK1SsNsnEIqxAKm2nwwsi8YbE1-pbOVXLgc?key=YmEwMUxUejFrQXlBUWEybnZudE45Sk1MT1E3d3h3", notes:["Freedom of the Hills, 9th Edition: page 155"] },
-  { name:"Girth Hitch", link:"https://photos.google.com/share/AF1QipOKUXQqcU62nsPp3b4Hk7eobxtf9nQ51GO9igY70sMQBiqCI0ogDwWXZDzvde5ZOQ/photo/AF1QipMc8vXCD7bppFHVD1OucIARTBwGH92gTSQWi7sP?key=YmEwMUxUejFrQXlBUWEybnZudE45Sk1MT1E3d3h3", notes:["Quickly attaching webbing/cord to something (e.g. your pack, a natural anchor)","Attaching Personal Anchor System (PAS) to harness","Freedom of the Hills, 9th Edition: page 159"] },
-  { name:"Rewoven Figure 8", link:"https://photos.google.com/share/AF1QipOKUXQqcU62nsPp3b4Hk7eobxtf9nQ51GO9igY70sMQBiqCI0ogDwWXZDzvde5ZOQ/photo/AF1QipP4LbQO6bkBBpa9BLDQPdojabK8_FVRII6YiKBd?key=YmEwMUxUejFrQXlBUWEybnZudE45Sk1MT1E3d3h3", notes:["Use for: tying into your climbing harness","For the WAC Way, finish with an overhand knot — this verifies you have enough tail","FOTH instructs a tail at least the length of the knot — consider this a bare minimum"] },
-  { name:"Figure 8 on a Bight", link:"https://photos.google.com/share/AF1QipOKUXQqcU62nsPp3b4Hk7eobxtf9nQ51GO9igY70sMQBiqCI0ogDwWXZDzvde5ZOQ/photo/AF1QipOd9DeYSjTYNYp3ifrVOJX5inZb5T6Kc6_9K4Da?key=YmEwMUxUejFrQXlBUWEybnZudE45Sk1MT1E3d3h3", notes:["Freedom of the Hills, Ed. 9: page 157","Use for: cleaning at the top of a climb with the 'thread and lower' technique","Use for: tying into the middle of a rope (e.g. for glacier travel)","Use for: backup knot during Z-Pulley"] },
-  { name:"Stopper Knot", link:"https://photos.google.com/share/AF1QipOKUXQqcU62nsPp3b4Hk7eobxtf9nQ51GO9igY70sMQBiqCI0ogDwWXZDzvde5ZOQ/photo/AF1QipOAJ-bjxXZpSaxXgvb1G-VYOO9Yb-o4s7Rt9-1U?key=YmEwMUxUejFrQXlBUWEybnZudE45Sk1MT1E3d3h3", notes:["Freedom of the Hills, Ed. 9: page 209","Use on end(s) of rope when belaying or rappelling","Tail: FOTH recommends at least 4 inches — personally recommend 12-18 inches"] },
-  { name:"Opposite and Opposed Carabiners", link:"https://photos.google.com/share/AF1QipOKUXQqcU62nsPp3b4Hk7eobxtf9nQ51GO9igY70sMQBiqCI0ogDwWXZDzvde5ZOQ/photo/AF1QipNYn7G4yFwbT4k1jzKanoCGvSDkvwkcoTpKXtOU?key=YmEwMUxUejFrQXlBUWEybnZudE45Sk1MT1E3d3h3", notes:["Freedom of the Hills, 9th Edition: page 170"] },
-  { name:"Water Knot", link:"https://photos.google.com/share/AF1QipOKUXQqcU62nsPp3b4Hk7eobxtf9nQ51GO9igY70sMQBiqCI0ogDwWXZDzvde5ZOQ/photo/AF1QipPVKmK-KrIYItbawfRWu7Aqz2Ocne3SzANswLkg?key=YmEwMUxUejFrQXlBUWEybnZudE45Sk1MT1E3d3h3", notes:["Freedom of the Hills, Ed. 9: page 156","Tail length: minimum 2-3 inches according to FOTH"] },
-  { name:"Double Fisherman's", link:"https://photos.google.com/share/AF1QipOKUXQqcU62nsPp3b4Hk7eobxtf9nQ51GO9igY70sMQBiqCI0ogDwWXZDzvde5ZOQ/photo/AF1QipM7Va7-cwQW7QNmXXQaRu6Vgfbn6m9gkhHe8nUG?key=YmEwMUxUejFrQXlBUWEybnZudE45Sk1MT1E3d3h3", notes:["Freedom of the Hills, Ed. 9: page 157","Tail: 2-3 inches for prusik cords","Tail: 5-6 times the diameter of the cord","Note: FOTH doesn't specify tail length"] },
-  { name:"Prusik", link:"https://photos.google.com/share/AF1QipOKUXQqcU62nsPp3b4Hk7eobxtf9nQ51GO9igY70sMQBiqCI0ogDwWXZDzvde5ZOQ/photo/AF1QipNN-vJ7PgLU7qWQ-F2qHUyX0d0YqADM7qS0wklk?key=YmEwMUxUejFrQXlBUWEybnZudE45Sk1MT1E3d3h3", notes:["Freedom of the Hills, Ed. 9: page 161","Use for: crevasse rescue","Use for: prusiking into a handline","Use for: progress capture during Z-Pulley","Sometimes seen as a third-hand while rappelling — not taught in BCC"] },
-  { name:"Autoblock", link:"https://photos.google.com/share/AF1QipOKUXQqcU62nsPp3b4Hk7eobxtf9nQ51GO9igY70sMQBiqCI0ogDwWXZDzvde5ZOQ/photo/AF1QipP01gvX5dM8Tq-pGdgNWe6RtSolDH9aqlWXlpHt?key=YmEwMUxUejFrQXlBUWEybnZudE45Sk1MT1E3d3h3", notes:["Freedom of the Hills, Ed. 9: page 162","Use for: 3rd hand while rappelling"] },
-  { name:"Clove Hitch", link:"https://photos.google.com/share/AF1QipOKUXQqcU62nsPp3b4Hk7eobxtf9nQ51GO9igY70sMQBiqCI0ogDwWXZDzvde5ZOQ/photo/AF1QipMBm5TpLvPJT7hLLb0khoPiSY-oLhzvOHnESg2e?key=YmEwMUxUejFrQXlBUWEybnZudE45Sk1MT1E3d3h3", notes:["Freedom of the Hills, Ed. 9: page 159","Use for: fixing a point on the rope to a carabiner","Use for: cleaning anchors during thread-and-lower","Use for: progress capture when prusiking out of a crevasse"] },
-  { name:"Munter", link:"https://photos.google.com/share/AF1QipOKUXQqcU62nsPp3b4Hk7eobxtf9nQ51GO9igY70sMQBiqCI0ogDwWXZDzvde5ZOQ/photo/AF1QipNHIFBXlOHVw3WYm5Kyx4UfFC8-A3MeRP1yVXK5?key=YmEwMUxUejFrQXlBUWEybnZudE45Sk1MT1E3d3h3", notes:["Freedom of the Hills, Ed. 9: page 163","⚠ Brake strand should NEVER run over the gate of the carabiner — this is extremely dangerous"] },
-  { name:"Klemheist", link:"https://photos.google.com/share/AF1QipOKUXQqcU62nsPp3b4Hk7eobxtf9nQ51GO9igY70sMQBiqCI0ogDwWXZDzvde5ZOQ/photo/AF1QipONE3KdkOOORXLfYWMw1OvksGQkwPeChSSpQw40?key=YmEwMUxUejFrQXlBUWEybnZudE45Sk1MT1E3d3h3", notes:["Freedom of the Hills, 9th Edition: page 162","Correction: video mistakenly says Dyneema runner should be avoided","Dyneema has a low melting point — high friction degrades strength","OK for Dyneema: holding/fixing a rope strand (low/no friction)","Avoid for Dyneema: ascending a rope or use as third hand for rappelling (high friction)"] },
+  { cat:"Climb",
+    items:[
+      { name:"Girth hitch onto harness", use:"Personal anchor to harness", link:"https://photos.google.com/share/AF1QipOKUXQqcU62nsPp3b4Hk7eobxtf9nQ51GO9igY70sMQBiqCI0ogDwWXZDzvde5ZOQ/photo/AF1QipMc8vXCD7bppFHVD1OucIARTBwGH92gTSQWi7sP?key=YmEwMUxUejFrQXlBUWEybnZudE45Sk1MT1E3d3h3", notes:["Quickly attaching webbing/cord to something (e.g. your pack, a natural anchor)","Attaching Personal Anchor System (PAS) to harness","Freedom of the Hills, 9th Edition: page 159"] },
+      { name:"Re-woven figure eight", use:"Tie into harness", link:"https://photos.google.com/share/AF1QipOKUXQqcU62nsPp3b4Hk7eobxtf9nQ51GO9igY70sMQBiqCI0ogDwWXZDzvde5ZOQ/photo/AF1QipP4LbQO6bkBBpa9BLDQPdojabK8_FVRII6YiKBd?key=YmEwMUxUejFrQXlBUWEybnZudE45Sk1MT1E3d3h3", notes:["For the WAC Way, finish with an overhand knot — this verifies you have enough tail","FOTH instructs a tail at least the length of the knot — consider this a bare minimum"] },
+      { name:"Harness check", use:"On correctly, double-backed", link:"", notes:["Verify harness is on correctly and all buckles are double-backed before climbing"] },
+    ]
+  },
+  { cat:"Belay",
+    items:[
+      { name:"Climbing signals", use:"On belay? Belay on. Climbing? Climb on.", link:"", notes:["Standard calls: 'On belay?' → 'Belay on' → 'Climbing?' → 'Climb on'","Use clear, loud voice — especially important in wind or distance"] },
+      { name:"Munter hitch", use:"Belay and rappel without belay device", link:"https://photos.google.com/share/AF1QipOKUXQqcU62nsPp3b4Hk7eobxtf9nQ51GO9igY70sMQBiqCI0ogDwWXZDzvde5ZOQ/photo/AF1QipNHIFBXlOHVw3WYm5Kyx4UfFC8-A3MeRP1yVXK5?key=YmEwMUxUejFrQXlBUWEybnZudE45Sk1MT1E3d3h3", notes:["Freedom of the Hills, Ed. 9: page 163","⚠ Brake strand should NEVER run over the gate of the carabiner — this is extremely dangerous"] },
+      { name:"Belaying w/ Munter hitch", use:"Pull-Brake-Under-Slide belay", link:"https://photos.google.com/share/AF1QipOKUXQqcU62nsPp3b4Hk7eobxtf9nQ51GO9igY70sMQBiqCI0ogDwWXZDzvde5ZOQ/photo/AF1QipNHIFBXlOHVw3WYm5Kyx4UfFC8-A3MeRP1yVXK5?key=YmEwMUxUejFrQXlBUWEybnZudE45Sk1MT1E3d3h3", notes:["Pull-Brake-Under-Slide technique","⚠ Brake strand should NEVER run over the gate of the carabiner"] },
+      { name:"Belaying w/ ATC", use:"Pull-Brake-Under-Slide belay", link:"", notes:["Pull-Brake-Under-Slide technique","Keep brake hand on rope at all times"] },
+      { name:"Device-Mule hitch", use:"Rescue hitch: device-mule-overhand", link:"", notes:["Used to lock off a belay device hands-free","Sequence: device → mule hitch → overhand backup"] },
+    ]
+  },
+  { cat:"Rappel",
+    items:[
+      { name:"Autoblock", use:"Third hand backup when rappelling", link:"https://photos.google.com/share/AF1QipOKUXQqcU62nsPp3b4Hk7eobxtf9nQ51GO9igY70sMQBiqCI0ogDwWXZDzvde5ZOQ/photo/AF1QipP01gvX5dM8Tq-pGdgNWe6RtSolDH9aqlWXlpHt?key=YmEwMUxUejFrQXlBUWEybnZudE45Sk1MT1E3d3h3", notes:["Freedom of the Hills, Ed. 9: page 162","Use as 3rd hand while rappelling — attach to belay loop below device"] },
+      { name:"Stopper knot", use:"End of rappel rope", link:"https://photos.google.com/share/AF1QipOKUXQqcU62nsPp3b4Hk7eobxtf9nQ51GO9igY70sMQBiqCI0ogDwWXZDzvde5ZOQ/photo/AF1QipOAJ-bjxXZpSaxXgvb1G-VYOO9Yb-o4s7Rt9-1U?key=YmEwMUxUejFrQXlBUWEybnZudE45Sk1MT1E3d3h3", notes:["Freedom of the Hills, Ed. 9: page 209","One side of double fisherman's, or on end of rappel rope","Tail: FOTH recommends at least 4 inches — personally recommend 12-18 inches"] },
+      { name:"Extended rappel w/ ATC", use:"Dominant and nondominant hand, third hand backup", link:"", notes:["Extend device away from harness using PAS or sling","Use dominant hand as brake, nondominant to guide","Always back up with an autoblock third hand"] },
+      { name:"Rappel commands", use:"On rappel, off rappel", link:"", notes:["Call 'On rappel' before starting descent","Call 'Off rappel' when you reach the bottom and are unclipped"] },
+      { name:"Leg wrap", use:"Rope around back, wrapped up non-brake side leg", link:"", notes:["Emergency technique if you need to go hands-free on rappel","Wrap rope around back and up non-brake leg to create friction"] },
+      { name:"Rappel w/ Munter hitch", use:"Dominant hand, third hand backup, NOT extended", link:"https://photos.google.com/share/AF1QipOKUXQqcU62nsPp3b4Hk7eobxtf9nQ51GO9igY70sMQBiqCI0ogDwWXZDzvde5ZOQ/photo/AF1QipNHIFBXlOHVw3WYm5Kyx4UfFC8-A3MeRP1yVXK5?key=YmEwMUxUejFrQXlBUWEybnZudE45Sk1MT1E3d3h3", notes:["Use dominant hand as brake","Always back up with third hand","NOT extended — device clips directly to belay loop"] },
+    ]
+  },
+  { cat:"Glacier Travel",
+    items:[
+      { name:"Figure eight on a bight", use:"Create a loop in rope", link:"https://photos.google.com/share/AF1QipOKUXQqcU62nsPp3b4Hk7eobxtf9nQ51GO9igY70sMQBiqCI0ogDwWXZDzvde5ZOQ/photo/AF1QipOd9DeYSjTYNYp3ifrVOJX5inZb5T6Kc6_9K4Da?key=YmEwMUxUejFrQXlBUWEybnZudE45Sk1MT1E3d3h3", notes:["Freedom of the Hills, Ed. 9: page 157","Use for: tying into the middle of a rope for glacier travel","Use for: backup knot during Z-Pulley","Use for: cleaning at the top of a climb with 'thread and lower' technique"] },
+      { name:"Prusik hitch", use:"Friction hitch", link:"https://photos.google.com/share/AF1QipOKUXQqcU62nsPp3b4Hk7eobxtf9nQ51GO9igY70sMQBiqCI0ogDwWXZDzvde5ZOQ/photo/AF1QipNN-vJ7PgLU7qWQ-F2qHUyX0d0YqADM7qS0wklk?key=YmEwMUxUejFrQXlBUWEybnZudE45Sk1MT1E3d3h3", notes:["Freedom of the Hills, Ed. 9: page 161","Use for: crevasse rescue","Use for: prusiking into a handline","Use for: progress capture during Z-Pulley"] },
+      { name:"Passing protection on a running belay", use:"Tied in for glacier travel", link:"", notes:["Technique for moving through protection points while roped up on glacier travel"] },
+      { name:"Hip belay", use:"Snow travel, conditions dependent", link:"", notes:["Used on snow — body acts as the belay device","Conditions dependent — check with instructor for appropriate use cases"] },
+    ]
+  },
+  { cat:"Other",
+    items:[
+      { name:"Passing protection on a fixed hand line", use:"Tied in with prusik", link:"", notes:["Clip in with prusik before unclipping previous attachment","Never be completely unattached to the hand line"] },
+      { name:"Overhand knot", use:"Tie off other knots", link:"https://photos.google.com/share/AF1QipOKUXQqcU62nsPp3b4Hk7eobxtf9nQ51GO9igY70sMQBiqCI0ogDwWXZDzvde5ZOQ/photo/AF1QipPP8uK1SsNsnEIqxAKm2nwwsi8YbE1-pbOVXLgc?key=YmEwMUxUejFrQXlBUWEybnZudE45Sk1MT1E3d3h3", notes:["Freedom of the Hills, 9th Edition: page 155","Used as a finishing knot to back up other knots"] },
+      { name:"Clove hitch", use:"Useful in belay setups", link:"https://photos.google.com/share/AF1QipOKUXQqcU62nsPp3b4Hk7eobxtf9nQ51GO9igY70sMQBiqCI0ogDwWXZDzvde5ZOQ/photo/AF1QipMBm5TpLvPJT7hLLb0khoPiSY-oLhzvOHnESg2e?key=YmEwMUxUejFrQXlBUWEybnZudE45Sk1MT1E3d3h3", notes:["Freedom of the Hills, Ed. 9: page 159","Use for: fixing a point on the rope to a carabiner","Use for: cleaning anchors during thread-and-lower","Use for: progress capture when prusiking out of a crevasse"] },
+      { name:"Water knot", use:"Tie two ends of webbing, rappel anchor rigging", link:"https://photos.google.com/share/AF1QipOKUXQqcU62nsPp3b4Hk7eobxtf9nQ51GO9igY70sMQBiqCI0ogDwWXZDzvde5ZOQ/photo/AF1QipPVKmK-KrIYItbawfRWu7Aqz2Ocne3SzANswLkg?key=YmEwMUxUejFrQXlBUWEybnZudE45Sk1MT1E3d3h3", notes:["Freedom of the Hills, Ed. 9: page 156","Tail length: minimum 2-3 inches according to FOTH"] },
+      { name:"Double fisherman's", use:"Tie two ends of a rope, perlon & climbing rope", link:"https://photos.google.com/share/AF1QipOKUXQqcU62nsPp3b4Hk7eobxtf9nQ51GO9igY70sMQBiqCI0ogDwWXZDzvde5ZOQ/photo/AF1QipM7Va7-cwQW7QNmXXQaRu6Vgfbn6m9gkhHe8nUG?key=YmEwMUxUejFrQXlBUWEybnZudE45Sk1MT1E3d3h3", notes:["Freedom of the Hills, Ed. 9: page 157","Tail: 2-3 inches for prusik cords","Tail: 5-6 times the diameter of the cord"] },
+      { name:"Klemheist hitch", use:"Friction hitch, 5+ wraps, can use webbing", link:"https://photos.google.com/share/AF1QipOKUXQqcU62nsPp3b4Hk7eobxtf9nQ51GO9igY70sMQBiqCI0ogDwWXZDzvde5ZOQ/photo/AF1QipONE3KdkOOORXLfYWMw1OvksGQkwPeChSSpQw40?key=YmEwMUxUejFrQXlBUWEybnZudE45Sk1MT1E3d3h3", notes:["Freedom of the Hills, 9th Edition: page 162","Use 5+ wraps for adequate friction","Can use webbing unlike prusik","Dyneema OK for static use — avoid for rappelling/ascending (high friction degrades it)"] },
+      { name:"Reversed and opposed carabiners", use:"In lieu of locking carabiner", link:"https://photos.google.com/share/AF1QipOKUXQqcU62nsPp3b4Hk7eobxtf9nQ51GO9igY70sMQBiqCI0ogDwWXZDzvde5ZOQ/photo/AF1QipNYn7G4yFwbT4k1jzKanoCGvSDkvwkcoTpKXtOU?key=YmEwMUxUejFrQXlBUWEybnZudE45Sk1MT1E3d3h3", notes:["Freedom of the Hills, 9th Edition: page 170","Gates facing opposite directions so accidental opening is prevented"] },
+      { name:"Single butterfly coil w/ nail bite finish", use:"Rope storage", link:"", notes:["Standard method for coiling and carrying a rope","Nail bite finish keeps coil tidy and ready to deploy"] },
+      { name:"Thread & lower technique", use:"Cleaning sport anchors", link:"", notes:["Used to clean sport anchors without leaving gear","Thread rope through anchor, tie in, then lower — do not rappel"] },
+    ]
+  },
 ];
 
 // ── STATE ─────────────────────────────────────────────────────────────────────
@@ -468,6 +502,11 @@ function renderTrip() {
 }
 
 // ── KNOTS ─────────────────────────────────────────────────────────────────────
+// Flatten knots for indexing
+var KNOTS_FLAT = [];
+KNOTS.forEach(function(cat){ cat.items.forEach(function(k){ KNOTS_FLAT.push(k); }); });
+var KNOTS_TOTAL = KNOTS_FLAT.length;
+
 function toggleKnot(i) {
   knotState[i] = !knotState[i];
   save();
@@ -482,26 +521,34 @@ function toggleNotes(i) {
 }
 
 function renderKnots() {
-  var learned = KNOTS.filter(function(k, i){ return !!knotState[i]; }).length;
-  var pct = Math.round(learned / KNOTS.length * 100);
+  var learned = KNOTS_FLAT.filter(function(k, i){ return !!knotState[i]; }).length;
+  var pct = Math.round(learned / KNOTS_TOTAL * 100);
   document.getElementById('knot-bar').style.width = pct + '%';
-  document.getElementById('knot-count').textContent = learned + ' / ' + KNOTS.length + ' learned';
+  document.getElementById('knot-count').textContent = learned + ' / ' + KNOTS_TOTAL + ' learned';
+
   var html = '';
-  KNOTS.forEach(function(k, i) {
-    var isLearned = !!knotState[i];
-    var notesHtml = k.notes.map(function(n){
-      var warn = n.charAt(0) === '⚠';
-      return '<li' + (warn?' class="warn"':'') + '>' + n + '</li>';
-    }).join('');
-    html += '<div class="knot-row">' +
-      '<div class="knot-main" onclick="toggleNotes(' + i + ')">' +
-        '<input type="checkbox"' + (isLearned?' checked':'') + ' onclick="event.stopPropagation();toggleKnot(' + i + ')">' +
-        '<span class="knot-name' + (isLearned?' learned':'') + '">' + k.name + '</span>' +
-        '<a class="knot-link" href="' + k.link + '" target="_blank" onclick="event.stopPropagation()">↗</a>' +
-        '<button class="knot-caret" id="kc-' + i + '" onclick="event.stopPropagation();toggleNotes(' + i + ')">▾</button>' +
-      '</div>' +
-      '<div class="knot-notes" id="kn-' + i + '"><ul>' + notesHtml + '</ul></div>' +
-    '</div>';
+  var idx = 0;
+  KNOTS.forEach(function(cat) {
+    html += '<div class="category-label" style="margin-bottom:6px">' + cat.cat + '</div>';
+    cat.items.forEach(function(k) {
+      var i = idx++;
+      var isLearned = !!knotState[i];
+      var notesHtml = k.notes.map(function(n){
+        var warn = n.charAt(0) === '⚠';
+        return '<li' + (warn?' class="warn"':'') + '>' + n + '</li>';
+      }).join('');
+      html += '<div class="knot-row">' +
+        '<div class="knot-main" onclick="toggleNotes(' + i + ')">' +
+          '<input type="checkbox"' + (isLearned?' checked':'') + ' onclick="event.stopPropagation();toggleKnot(' + i + ')">' +
+          '<span class="knot-name' + (isLearned?' learned':'') + '">' + k.name +
+            (k.use ? ' <span style="font-size:11px;color:var(--muted);font-weight:400">— ' + k.use + '</span>' : '') +
+          '</span>' +
+          (k.link ? '<a class="knot-link" href="' + k.link + '" target="_blank" onclick="event.stopPropagation()">↗</a>' : '<span style="width:26px;display:inline-block"></span>') +
+          '<button class="knot-caret" id="kc-' + i + '" onclick="event.stopPropagation();toggleNotes(' + i + ')">▾</button>' +
+        '</div>' +
+        (k.notes.length ? '<div class="knot-notes" id="kn-' + i + '"><ul>' + notesHtml + '</ul></div>' : '') +
+      '</div>';
+    });
   });
   document.getElementById('knot-list').innerHTML = html;
 }
